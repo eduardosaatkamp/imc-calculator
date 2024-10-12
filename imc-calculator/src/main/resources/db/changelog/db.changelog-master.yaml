@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: saatkamp_usename
+      changes:
+        - createTable:
+            tableName: imc_record
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: weight
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: height
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: calculated_imc
+                  type: float
+                  constraints:
+                    nullable: false

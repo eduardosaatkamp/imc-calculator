@@ -2,7 +2,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
-    container_name: postgres_container
+    container_name: postgres_container_imc
     environment:
       POSTGRES_USER: saatkamp_username
       POSTGRES_PASSWORD: my_password
