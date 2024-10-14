@@ -13,8 +13,22 @@ const App: React.FC = () => {
 
   return (
       <div>
-          <button onClick={() => changeLanguage('pt')}>Português</button>
-          <button onClick={() => changeLanguage('en')}>English</button>
+         <button onClick={() => changeLanguage('pt')}>
+                <img
+                    alt="Brazil"
+                    src="https://catamphetamine.gitlab.io/country-flag-icons/3x2/BR.svg"
+                    style={{ width: '30px', height: '20px', marginRight: '8px' }}
+                />
+                {('Português')}
+            </button>
+          <button onClick={() => changeLanguage('en')}>
+                <img
+                    alt="United States"
+                    src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg"
+                    style={{ width: '30px', height: '20px', marginRight: '8px' }}
+                />
+                {('English')}
+            </button>
           <ImcCalculator />
       </div>
   );
