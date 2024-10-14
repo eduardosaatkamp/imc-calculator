@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const ImcCalculator = () => {
+    const { t } = useTranslation();
     const [weight, setWeight] = useState('');
     const [height, setHeight] = useState('');
     const [result, setResult] = useState<number | null>(null);
@@ -25,27 +27,27 @@ const ImcCalculator = () => {
 
     return (
         <div>
-            <h1>Calculadora de IMC</h1>
+            <h1>{t('IMC Calculator')}</h1>
             <div>
-                <label>Peso (kg): </label>
+                <label>{t('Weight (kg)')}:</label>
                 <input 
                     type="text" 
                     value={weight} 
                     onChange={(e) => setWeight(e.target.value.replace(/[^0-9.]/g, ''))} // Aceita apenas números e ponto
-                    placeholder="Peso (kg)" 
+                    placeholder={t('Weight (kg)')} 
                 />
             </div>
             <div>
-                <label>Altura (m): </label>
+                <label>{t('Height (m)')}:</label>
                 <input 
                     type="text" 
                     value={height} 
                     onChange={(e) => setHeight(e.target.value.replace(/[^0-9.]/g, ''))} // Aceita apenas números e ponto
-                    placeholder="Altura (m)" 
+                    placeholder={t('Height (m)')} 
                 />
             </div>
-            <button onClick={calculateImc}>Calcular IMC</button>
-            {result && <p>Seu IMC é: {result.toFixed(2)}</p>}
+            <button onClick={calculateImc}>{t('Calculate BMI')}</button>
+            {result && <p>{t('Your BMI is')}: {result.toFixed(2)}</p>}
         </div>
     );
 };
