@@ -1,6 +1,50 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Styled components
+const Container = styled.div`
+    text-align: center;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+`;
+
+const Title = styled.h1`
+    font-size: 2em;
+    color: #007bff;
+`;
+
+const InputGroup = styled.div`
+    margin-bottom: 20px;
+`;
+
+const Input = styled.input`
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+`;
+
+const Button = styled.button`
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+        background-color: #0056b3;
+    }
+`;
+
+const Result = styled.p`
+    font-size: 1.2em;
+    color: #28a745;
+    margin-top: 20px;
+`;
 
 const ImcCalculator = () => {
     const { t } = useTranslation();
@@ -26,29 +70,41 @@ const ImcCalculator = () => {
     };
 
     return (
-        <div>
-            <h1>{t('IMC Calculator')}</h1>
-            <div>
-                <label>{t('Weight (kg)')}:</label>
-                <input 
+        <Container className="container">
+            <Title>{t('IMC Calculator')}</Title>
+
+            <InputGroup className="form-group">
+                <label htmlFor="weight">{t('Weight (kg)')}:</label>
+                <Input 
+                    id="weight"
                     type="text" 
                     value={weight} 
                     onChange={(e) => setWeight(e.target.value.replace(/[^0-9.]/g, ''))} // Aceita apenas números e ponto
                     placeholder={t('Weight (kg)')} 
+                    className="form-control"
                 />
-            </div>
-            <div>
-                <label>{t('Height (m)')}:</label>
-                <input 
+            </InputGroup>
+
+            <InputGroup className="form-group">
+                <label htmlFor="height">{t('Height (m)')}:</label>
+                <Input 
+                    id="height"
                     type="text" 
                     value={height} 
                     onChange={(e) => setHeight(e.target.value.replace(/[^0-9.]/g, ''))} // Aceita apenas números e ponto
                     placeholder={t('Height (m)')} 
+                    className="form-control"
                 />
-            </div>
-            <button onClick={calculateImc}>{t('Calculate BMI')}</button>
-            {result && <p>{t('Your BMI is')}: {result.toFixed(2)}</p>}
-        </div>
+            </InputGroup>
+
+            <Button onClick={calculateImc} className="btn btn-primary">
+                {t('Calculate BMI')}
+            </Button>
+
+            {result && (
+                <Result>{t('Your BMI is')}: {result.toFixed(2)}</Result>
+            )}
+        </Container>
     );
 };
 
