@@ -74,6 +74,16 @@ const ImcCalculator = () => {
             <Title>{t('IMC Calculator')}</Title>
 
             <InputGroup className="form-group">
+                <label htmlFor="name">{t('Name')}:</label>
+                <Input 
+                    id="name"
+                    type="text" 
+                    placeholder={t('Name')} 
+                    className="form-control"
+                />
+            </InputGroup>
+
+            <InputGroup className="form-group">
                 <label htmlFor="weight">{t('Weight (kg)')}:</label>
                 <Input 
                     id="weight"
