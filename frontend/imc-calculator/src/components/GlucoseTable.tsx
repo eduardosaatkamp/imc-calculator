@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
+// Interface para os dados de glicemia
+interface GlicemiaPaciente {
+  nome: string;
+  glicemiaCliente: number;
+  obsGlicemia: string;
+}
+
+// Estilos do card
 const Card = styled.div`
-  width: 95%;
-  max-width: 400px;
+  max-width: 600px;
+  margin: 20px auto;
   padding: 20px;
+  background-color: #fff;
   border: 2px solid #007bff;
   border-radius: 8px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  background-color: white;
   text-align: center;
-  overflow: hidden;
-  margin-top: 20px;
 `;
 
+// Estilos da tabela
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -34,30 +42,41 @@ const Td = styled.td`
   text-align: center;
 `;
 
-const GlucoseTable = () => {
+const GlucoseTable: React.FC = () => {
   const { t } = useTranslation();
-  const pacientes = [
-    { nome: 'John Doe', glicemia: 120, obsGlicemia: t('observation.high') },
-    { nome: 'Alice Johnson', glicemia: 85, obsGlicemia: t('observation.normal') },
-  ];
+  const [pacientes, setPacientes] = useState<GlicemiaPaciente[]>([]);
+
+  // Função para buscar dados de glicemia
+  const fetchGlucoseData = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/cliente?tipo=glicemia');
+      setPacientes(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar dados de glicemia:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGlucoseData();
+  }, []); // Executa ao carregar o componente
 
   return (
     <Card>
-      <h2>{t('patientList.title')}</h2>
+      <h2>{t('patientList.title')} - {t('triageTitle')}</h2>
       <Table>
         <thead>
           <tr>
             <Th>{t('patientList.name')}</Th>
             <Th>{t('patientList.glucose')}</Th>
-            <Th>{t('patientList.observation')}</Th>
+            {/* <Th>{t('patientList.observation')}</Th> */}
           </tr>
         </thead>
         <tbody>
           {pacientes.map((paciente, index) => (
             <tr key={index}>
               <Td>{paciente.nome}</Td>
-              <Td>{paciente.glicemia}</Td>
-              <Td>{paciente.obsGlicemia}</Td>
+              <Td>{paciente.glicemiaCliente}</Td>
+              {/* <Td>{paciente.obsGlicemia}</Td> */}
             </tr>
           ))}
         </tbody>

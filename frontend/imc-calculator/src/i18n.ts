@@ -28,9 +28,14 @@ const resources = {
         "glucose": "Enter glucose level"
       },
       "observation": {
-        "high": "High",
-        "low": "Low",
-        "normal": "Normal"
+        "normal": "Normal",
+        "overweight": "Overweight",
+        "obese": "Obese"
+      },
+      "imcRanges": {
+        "rangeNormal": "Between 18.5 and 24.9",
+        "rangeOverweight": "Between 25 and 29.9",
+        "rangeObese": "Between 30 and 34.9"
       },
       "error": {
         "fetchPatients": "Error fetching patients:",
@@ -67,9 +72,14 @@ const resources = {
         "glucose": "Glicemia de jejum"
       },
       "observation": {
-        "high": "Alta",
-        "low": "Baixa",
-        "normal": "Normal"
+        "normal": "Normal",
+        "overweight": "Sobrepeso",
+        "obese": "Obesidade"
+      },
+      "imcRanges": {
+        "rangeNormal": "Entre 18,5 e 24,9",
+        "rangeOverweight": "Entre 25 e 29,9",
+        "rangeObese": "Entre 30 e 34,9"
       },
       "error": {
         "fetchPatients": "Erro ao buscar pacientes:",

@@ -53,25 +53,22 @@ const GlucoseForm = () => {
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [glucose, setGlucose] = useState('');
+  const [message, setMessage] = useState<string | null>(null);
 
   const handleRegisterGlucose = async () => {
     if (!name || !glucose) {
-      alert(t('error.fillFields'));
+      setMessage(t('error.fillFields'));
       return;
     }
-
-    const glicemia = parseFloat(glucose);
 
     try {
       await axios.post('http://localhost:8080/api/cliente', {
         nome: name,
-        glicemiaCliente: glicemia,
+        glicemiaCliente: parseFloat(glucose),
       });
-
-      // Alert com os dados enviados
-      alert(`Dados enviados:\nNome: ${name}\nGlicemia: ${glicemia} mg/dL`);
+      setMessage(t('patientList.successRegister'));
     } catch (error) {
-      alert(t('error.registerPatient'));
+      setMessage(t('error.registerPatient'));
     }
   };
 
@@ -98,8 +95,10 @@ const GlucoseForm = () => {
         />
       </div>
       <Button onClick={handleRegisterGlucose}>{t('patientList.register')}</Button>
+      {message && <p>{message}</p>}
     </Card>
   );
 };
 
 export default GlucoseForm;
+// codigo anterior

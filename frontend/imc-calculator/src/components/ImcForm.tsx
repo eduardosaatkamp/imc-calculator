@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import PersonMeasurement from '../assets/person_measurement.png';
 
+// Estilos do Card
 const Card = styled.div`
   width: 95%;
   max-width: 400px;
@@ -17,6 +18,7 @@ const Card = styled.div`
   margin-top: 20px;
 `;
 
+// Estilos da Imagem Redonda
 const RoundImage = styled.img`
   width: 120px;
   height: 120px;
@@ -26,6 +28,7 @@ const RoundImage = styled.img`
   border: 3px solid #007bff;
 `;
 
+// Estilos do Input
 const Input = styled.input`
   padding: 8px;
   width: 80%;
@@ -36,6 +39,7 @@ const Input = styled.input`
   border: 1px solid #ccc;
 `;
 
+// Estilos do Botão
 const Button = styled.button`
   background-color: #007bff;
   color: white;
@@ -54,27 +58,38 @@ const ImcForm = () => {
   const [name, setName] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
+  const [message, setMessage] = useState<string | null>(null);
+
+  // Calcula o IMC
+  const calculateImc = (weight: number, height: number) => {
+    return (weight / (height * height)).toFixed(1);
+  };
 
   const handleCalculateImc = async () => {
-    if (!name || !weight || !height) {
-      alert(t('error.fillFields'));
+    // Converte os valores de peso e altura para números
+    const weightNum = parseFloat(weight);
+    const heightNum = parseFloat(height);
+
+    if (!name || isNaN(weightNum) || isNaN(heightNum) || heightNum === 0) {
+      setMessage(t('error.fillFields'));
       return;
     }
 
-    const peso = parseFloat(weight);
-    const altura = parseFloat(height);
+    const imc = calculateImc(weightNum, heightNum);
 
     try {
       await axios.post('http://localhost:8080/api/cliente', {
         nome: name,
-        peso,
-        altura,
+        peso: weightNum,
+        altura: heightNum,
       });
 
-      // Alert com os dados enviados
-      alert(`Dados enviados:\nNome: ${name}\nPeso: ${peso} kg\nAltura: ${altura} m`);
+      // Alerta com as informações enviadas e o IMC calculado
+      alert(`Nome: ${name}\nPeso: ${weightNum} kg\nAltura: ${heightNum} m\nIMC: ${imc}`);
+
+      setMessage(t('patientList.successRegister'));
     } catch (error) {
-      alert(t('error.registerPatient'));
+      setMessage(t('error.registerPatient'));
     }
   };
 
@@ -110,6 +125,7 @@ const ImcForm = () => {
         />
       </div>
       <Button onClick={handleCalculateImc}>{t('Calculate BMI')}</Button>
+      {message && <p>{message}</p>}
     </Card>
   );
 };
