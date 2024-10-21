@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
@@ -58,6 +58,7 @@ const ImcForm = () => {
   const [name, setName] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
+  const [imc, setImc] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   // Calcula o IMC
@@ -65,17 +66,27 @@ const ImcForm = () => {
     return (weight / (height * height)).toFixed(1);
   };
 
-  const handleCalculateImc = async () => {
-    // Converte os valores de peso e altura para números
+  // Atualiza o IMC sempre que o peso ou a altura mudam
+  useEffect(() => {
     const weightNum = parseFloat(weight);
     const heightNum = parseFloat(height);
 
-    if (!name || isNaN(weightNum) || isNaN(heightNum) || heightNum === 0) {
+    // Calcula o IMC apenas se altura estiver em metros
+    if (!isNaN(weightNum) && !isNaN(heightNum) && heightNum > 0 && heightNum <= 3) {
+      setImc(calculateImc(weightNum, heightNum));
+    } else {
+      setImc(null);
+    }
+  }, [weight, height]);
+
+  const handleCalculateImc = async () => {
+    const weightNum = parseFloat(weight);
+    const heightNum = parseFloat(height);
+
+    if (!name || isNaN(weightNum) || isNaN(heightNum) || heightNum === 0 || heightNum > 3) {
       setMessage(t('error.fillFields'));
       return;
     }
-
-    const imc = calculateImc(weightNum, heightNum);
 
     try {
       await axios.post('http://localhost:8080/api/cliente', {
@@ -84,7 +95,6 @@ const ImcForm = () => {
         altura: heightNum,
       });
 
-      // Alerta com as informações enviadas e o IMC calculado
       alert(`Nome: ${name}\nPeso: ${weightNum} kg\nAltura: ${heightNum} m\nIMC: ${imc}`);
 
       setMessage(t('patientList.successRegister'));
@@ -125,6 +135,7 @@ const ImcForm = () => {
         />
       </div>
       <Button onClick={handleCalculateImc}>{t('Calculate BMI')}</Button>
+      {imc && <p>{t('Your BMI is')}: {imc}</p>}
       {message && <p>{message}</p>}
     </Card>
   );
