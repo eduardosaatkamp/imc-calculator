@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import PersonMeasurement from '../assets/person_measurement.png';
 
-// Estilos do Card
 const Card = styled.div`
   width: 95%;
   max-width: 400px;
@@ -18,7 +17,6 @@ const Card = styled.div`
   margin-top: 20px;
 `;
 
-// Estilos da Imagem Redonda
 const RoundImage = styled.img`
   width: 120px;
   height: 120px;
@@ -28,7 +26,6 @@ const RoundImage = styled.img`
   border: 3px solid #007bff;
 `;
 
-// Estilos do Input
 const Input = styled.input`
   padding: 8px;
   width: 80%;
@@ -39,7 +36,6 @@ const Input = styled.input`
   border: 1px solid #ccc;
 `;
 
-// Estilos do Botão
 const Button = styled.button`
   background-color: #007bff;
   color: white;
@@ -53,40 +49,31 @@ const Button = styled.button`
   }
 `;
 
-const ImcForm = () => {
+interface ImcFormProps {
+  fetchImcData: () => void;
+}
+
+const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
-  const [imc, setImc] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  // Calcula o IMC
   const calculateImc = (weight: number, height: number) => {
     return (weight / (height * height)).toFixed(1);
   };
-
-  // Atualiza o IMC sempre que o peso ou a altura mudam
-  useEffect(() => {
-    const weightNum = parseFloat(weight);
-    const heightNum = parseFloat(height);
-
-    // Calcula o IMC apenas se altura estiver em metros
-    if (!isNaN(weightNum) && !isNaN(heightNum) && heightNum > 0 && heightNum <= 3) {
-      setImc(calculateImc(weightNum, heightNum));
-    } else {
-      setImc(null);
-    }
-  }, [weight, height]);
 
   const handleCalculateImc = async () => {
     const weightNum = parseFloat(weight);
     const heightNum = parseFloat(height);
 
-    if (!name || isNaN(weightNum) || isNaN(heightNum) || heightNum === 0 || heightNum > 3) {
+    if (!name || isNaN(weightNum) || isNaN(heightNum) || heightNum === 0) {
       setMessage(t('error.fillFields'));
       return;
     }
+
+    const imc = calculateImc(weightNum, heightNum);
 
     try {
       await axios.post('http://localhost:8080/api/cliente', {
@@ -95,7 +82,8 @@ const ImcForm = () => {
         altura: heightNum,
       });
 
-      alert(`Nome: ${name}\nPeso: ${weightNum} kg\nAltura: ${heightNum} m\nIMC: ${imc}`);
+      // Chama a função para buscar dados de IMC e abrir o modal
+      fetchImcData();
 
       setMessage(t('patientList.successRegister'));
     } catch (error) {
@@ -135,7 +123,6 @@ const ImcForm = () => {
         />
       </div>
       <Button onClick={handleCalculateImc}>{t('Calculate BMI')}</Button>
-      {imc && <p>{t('Your BMI is')}: {imc}</p>}
       {message && <p>{message}</p>}
     </Card>
   );

@@ -6,6 +6,7 @@ import GlucoseForm from './components/GlucoseForm';
 import GlucoseQueueTable from './components/GlucoseQueueTable';
 import styled from 'styled-components';
 import Modal from './components/Modal';
+import ImcModalTable from './components/ImcModalTable';
 import GlucoseTable from './components/GlucoseTable';
 import axios from 'axios';
 
@@ -59,20 +60,34 @@ const AppTitle = styled.h1`
 
 const App = () => {
   const { i18n, t } = useTranslation();
+  const [imcData, setImcData] = useState<
+    { nome: string; imcCliente: number; peso: number; altura: number }[]
+  >([]);
   const [glucoseData, setGlucoseData] = useState<
     { nome: string; glicemiaCliente: number; obsGlicemia: string }[]
   >([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showImcModal, setShowImcModal] = useState(false);
+  const [showGlucoseModal, setShowGlucoseModal] = useState(false);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
+  };
+
+  const fetchImcData = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/cliente?tipo=imc');
+      setImcData(response.data);
+      setShowImcModal(true);
+    } catch (error) {
+      console.error('Erro ao buscar dados de IMC:', error);
+    }
   };
 
   const fetchGlucoseData = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/cliente?tipo=glicemia');
       setGlucoseData(response.data);
-      setShowModal(true);
+      setShowGlucoseModal(true);
     } catch (error) {
       console.error('Erro ao buscar dados de glicemia:', error);
     }
@@ -83,31 +98,32 @@ const App = () => {
       <NavBar>
         <LanguageSwitcher>
           <FlagButton onClick={() => changeLanguage('pt')}>
-            <Flag
-              src="https://catamphetamine.gitlab.io/country-flag-icons/3x2/BR.svg"
-              alt="Português"
-            />
+            <Flag src="https://catamphetamine.gitlab.io/country-flag-icons/3x2/BR.svg" alt="Português" />
           </FlagButton>
           <AppTitle>{t('triageTitle')}</AppTitle>
           <FlagButton onClick={() => changeLanguage('en')}>
-            <Flag
-              src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg"
-              alt="English"
-            />
+            <Flag src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" alt="English" />
           </FlagButton>
         </LanguageSwitcher>
       </NavBar>
 
       <div style={{ marginTop: '60px' }}>
-        <ImcForm />
+        <ImcForm fetchImcData={fetchImcData} />
         <ImcTable />
         <GlucoseForm fetchGlucoseData={fetchGlucoseData} />
         <GlucoseQueueTable />
       </div>
 
+      {/* Modal de IMC */}
+      {showImcModal && (
+        <Modal onClose={() => setShowImcModal(false)}>
+          <ImcModalTable imcData={imcData} />
+        </Modal>
+      )}
+
       {/* Modal de Glicemia */}
-      {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
+      {showGlucoseModal && (
+        <Modal onClose={() => setShowGlucoseModal(false)}>
           <GlucoseTable glucoseData={glucoseData} />
         </Modal>
       )}
