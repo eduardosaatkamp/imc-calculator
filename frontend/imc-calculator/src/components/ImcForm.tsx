@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import PersonMeasurement from '../assets/person_measurement.png';
 
 const Card = styled.div`
-  width: 95%;
-  max-width: 400px;
+ width: 80%;
+  max-width: 500px;
   padding: 20px;
   border: 2px solid #007bff;
   border-radius: 8px;

@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      "glucoseTitle": "Glucose Screening",
       "appTitle": "BMI and Glucose Control",
       "IMC Calculator": "BMI Calculator",
       "Weight (kg)": "Weight (kg)",
@@ -31,6 +32,8 @@ const resources = {
         "glucose": "Enter glucose level"
       },
       "observation": {
+        "diabetes": "Diabetes",
+        "preDiabetes": "Pre-diabetes",
         "high": "High",
         "low": "Low",
         "normal": "Normal",
@@ -74,12 +77,15 @@ const resources = {
         "name": "Nome do paciente",
         "glucose": "Glicemia de jejum"
       },
+      "glucoseTitle": "Triagem de Glicemia",
       "observation": {
+        "preDiabetes": "Pré-diabetes",
         "high": "Alta",
         "low": "Baixa",
         "normal": "Normal",
         "overweight": "Sobrepeso",
-        "obese": "Obeso"
+        "obese": "Obeso",
+        "diabetes": "Diabetes"
       },
       "error": {
         "fetchPatients": "Erro ao buscar pacientes:",

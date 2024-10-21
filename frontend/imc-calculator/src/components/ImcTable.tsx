@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 
 // Estilos do Card
 const Card = styled.div`
-  width: 95%;
-  max-width: 400px;
+  width: 80%;
+  max-width: 500px;
   padding: 20px;
   border: 2px solid #007bff;
   border-radius: 8px;
@@ -36,6 +36,15 @@ const Td = styled.td`
   text-align: center;
 `;
 
+const Description = styled.div`
+  margin-bottom: 10px;
+  text-align: left;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
+
 const ImcTable = () => {
   const { t } = useTranslation();
   const pacientes = [
@@ -47,6 +56,11 @@ const ImcTable = () => {
   return (
     <Card>
       <h2>{t('patientList.title')}</h2>
+      <Description>
+        <strong>IMC (Índice de Massa Corporal):</strong> O IMC é uma medida para avaliar se o peso está adequado
+        em relação à altura. Valores normais estão entre <strong>18.5 e 24.9</strong>. Atenção para valores abaixo de
+        18.5 (baixo peso) ou acima de 24.9 (sobrepeso).
+      </Description>
       <Table>
         <thead>
           <tr>
