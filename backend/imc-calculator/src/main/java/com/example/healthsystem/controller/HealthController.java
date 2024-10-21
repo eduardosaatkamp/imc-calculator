@@ -18,14 +18,12 @@ public class HealthController {
     @Autowired
     private HealthService healthService;
 
-    // Endpoint para criar ou atualizar dados de IMC ou Glicemia
     @PostMapping
     public ResponseEntity<Health> createOrUpdateCliente(@RequestBody Health health) {
         if (health.getNome() == null || health.getNome().trim().isEmpty()) {
             return ResponseEntity.badRequest().body(null);
         }
 
-        // Verifica se pelo menos uma das combinações de dados está presente
         boolean isValidImcInput = health.getPeso() != null && health.getAltura() != null;
         boolean isValidGlicemiaInput = health.getGlicemiaCliente() != null;
 
@@ -33,12 +31,10 @@ public class HealthController {
             return ResponseEntity.badRequest().body(null);
         }
 
-        // Calcular o IMC e definir observações
         if (isValidImcInput) {
             double imc = health.getPeso() / (health.getAltura() * health.getAltura());
             health.setImcCliente(imc);
 
-            // Adiciona a observação de IMC
             if (imc < 18.5) {
                 health.setObsImc("Abaixo do peso");
             } else if (imc >= 18.5 && imc < 24.9) {
@@ -50,7 +46,6 @@ public class HealthController {
             }
         }
 
-        // Adiciona a observação de glicemia
         if (isValidGlicemiaInput) {
             if (health.getGlicemiaCliente() < 70) {
                 health.setObsGlicemia("Hipoglicemia");
@@ -63,14 +58,11 @@ public class HealthController {
             }
         }
 
-        // Salvar os dados do cliente no banco de dados
         Health savedHealth = healthService.createOrUpdateCliente(health);
 
-        // Retornar o objeto atualizado
         return ResponseEntity.ok(savedHealth);
     }
 
-    // Endpoint para obter um cliente por ID
     @GetMapping("/{id}")
     public ResponseEntity<Health> getClienteById(@PathVariable Long id) {
         Optional<Health> cliente = healthService.getClienteById(id);
@@ -79,21 +71,18 @@ public class HealthController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // Endpoint para listar clientes com dados de IMC
     @GetMapping(params = "tipo=imc")
     public ResponseEntity<List<Health>> getClientesImc() {
         List<Health> clientesImc = healthService.getClientesImc();
         return ResponseEntity.ok(clientesImc);
     }
 
-    // Endpoint para listar clientes com dados de Glicemia
     @GetMapping(params = "tipo=glicemia")
     public ResponseEntity<List<Health>> getClientesGlicemia() {
         List<Health> clientesGlicemia = healthService.getClientesGlicemia();
         return ResponseEntity.ok(clientesGlicemia);
     }
 
-    // Endpoint para atualizar um cliente existente
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCliente(@PathVariable Long id, @RequestBody Health health) {
         Optional<Health> existingCliente = healthService.getClienteById(id);
@@ -101,13 +90,11 @@ public class HealthController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado.");
         }
 
-        // Atualiza os dados do cliente existente
         Health healthToUpdate = existingCliente.get();
         healthToUpdate.setNome(health.getNome());
         healthToUpdate.setPeso(health.getPeso());
         healthToUpdate.setAltura(health.getAltura());
 
-        // Recalcula o IMC e as observações, se necessário
         boolean isValidImcInput = health.getPeso() != null && health.getAltura() != null;
         if (isValidImcInput) {
             double imc = health.getPeso() / (health.getAltura() * health.getAltura());
@@ -141,7 +128,6 @@ public class HealthController {
         return new ResponseEntity<>("Cliente atualizado com sucesso.", HttpStatus.OK);
     }
 
-    // Endpoint para excluir um cliente por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCliente(@PathVariable Long id) {
         Optional<Health> existingCliente = healthService.getClienteById(id);

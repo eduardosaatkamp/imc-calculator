@@ -9,9 +9,7 @@ import java.util.List;
 @Repository
 public interface HealthRepository extends JpaRepository<Health, Long> {
 
-    // Método para buscar clientes com dados de IMC
     List<Health> findByPesoNotNullAndAlturaNotNull();
 
-    // Método para buscar clientes com dados de Glicemia
     List<Health> findByGlicemiaClienteNotNull();
 }
