@@ -15,12 +15,14 @@ const resources = {
         "title": "Patient List",
         "name": "Name",
         "glucose": "Glucose",
+        "fastingTime": "Fasting Time",
         "observation": "Observation",
         "edit": "Edit",
         "delete": "Delete",
         "save": "Save",
         "cancel": "Cancel",
         "register": "Register Patient",
+        "viewQueue": "View Queue",
         "successRegister": "Patient registered successfully"
       },
       "placeholders": {
@@ -28,14 +30,11 @@ const resources = {
         "glucose": "Enter glucose level"
       },
       "observation": {
+        "high": "High",
+        "low": "Low",
         "normal": "Normal",
         "overweight": "Overweight",
         "obese": "Obese"
-      },
-      "imcRanges": {
-        "rangeNormal": "Between 18.5 and 24.9",
-        "rangeOverweight": "Between 25 and 29.9",
-        "rangeObese": "Between 30 and 34.9"
       },
       "error": {
         "fetchPatients": "Error fetching patients:",
@@ -59,12 +58,14 @@ const resources = {
         "title": "Lista de Pacientes",
         "name": "Nome",
         "glucose": "Glicemia",
+        "fastingTime": "Tempo de Jejum",
         "observation": "Observação",
         "edit": "Editar",
         "delete": "Excluir",
         "save": "Salvar",
         "cancel": "Cancelar",
         "register": "Registrar Paciente",
+        "viewQueue": "Ver Fila",
         "successRegister": "Paciente registrado com sucesso"
       },
       "placeholders": {
@@ -72,14 +73,11 @@ const resources = {
         "glucose": "Glicemia de jejum"
       },
       "observation": {
+        "high": "Alta",
+        "low": "Baixa",
         "normal": "Normal",
         "overweight": "Sobrepeso",
-        "obese": "Obesidade"
-      },
-      "imcRanges": {
-        "rangeNormal": "Entre 18,5 e 24,9",
-        "rangeOverweight": "Entre 25 e 29,9",
-        "rangeObese": "Entre 30 e 34,9"
+        "obese": "Obeso"
       },
       "error": {
         "fetchPatients": "Erro ao buscar pacientes:",

@@ -106,3 +106,4 @@ const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData }) => {
 };
 
 export default GlucoseForm;
+// codigo anterior

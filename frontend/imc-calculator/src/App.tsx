@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import ImcForm from './components/ImcForm';
 import ImcTable from './components/ImcTable';
 import GlucoseForm from './components/GlucoseForm';
+import GlucoseQueueTable from './components/GlucoseQueueTable';
 import styled from 'styled-components';
 import Modal from './components/Modal';
 import GlucoseTable from './components/GlucoseTable';
@@ -67,7 +68,6 @@ const App = () => {
     i18n.changeLanguage(lng);
   };
 
-  // Função para buscar dados de glicemia e abrir o modal
   const fetchGlucoseData = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/cliente?tipo=glicemia');
@@ -102,6 +102,7 @@ const App = () => {
         <ImcForm />
         <ImcTable />
         <GlucoseForm fetchGlucoseData={fetchGlucoseData} />
+        <GlucoseQueueTable />
       </div>
 
       {/* Modal de Glicemia */}

@@ -11,7 +11,6 @@ const Card = styled.div`
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   background-color: white;
   text-align: center;
-  overflow: hidden;
   margin-top: 20px;
 `;
 
@@ -34,12 +33,12 @@ const Td = styled.td`
   text-align: center;
 `;
 
-interface GlucoseTableProps {
-  glucoseData: { nome: string; glicemiaCliente: number; obsGlicemia: string }[];
-}
-
-const GlucoseTable: React.FC<GlucoseTableProps> = ({ glucoseData }) => {
+const GlucoseQueueTable = () => {
   const { t } = useTranslation();
+  const pacientes = [
+    { nome: 'Ana Souza', glicemia: 145, jejum: '8 horas', obs: t('observation.high') },
+    { nome: 'João Pereira', glicemia: 85, jejum: '10 horas', obs: t('observation.low') },
+  ];
 
   return (
     <Card>
@@ -47,17 +46,19 @@ const GlucoseTable: React.FC<GlucoseTableProps> = ({ glucoseData }) => {
       <Table>
         <thead>
           <tr>
-            <Th>{t('patientList.name')}</Th>
+            {/* <Th>{t('patientList.name')}</Th> */}
             <Th>{t('patientList.glucose')}</Th>
-            {/* <Th>{t('patientList.observation')}</Th> */}
+            <Th>{t('patientList.fastingTime')}</Th>
+            <Th>{t('patientList.observation')}</Th>
           </tr>
         </thead>
         <tbody>
-          {glucoseData.map((paciente, index) => (
+          {pacientes.map((paciente, index) => (
             <tr key={index}>
-              <Td>{paciente.nome}</Td>
-              <Td>{paciente.glicemiaCliente}</Td>
-              {/* <Td>{paciente.obsGlicemia}</Td> */}
+              {/* <Td>{paciente.nome}</Td> */}
+              <Td>{paciente.glicemia}</Td>
+              <Td>{paciente.jejum}</Td>
+              <Td>{paciente.obs}</Td>
             </tr>
           ))}
         </tbody>
@@ -66,5 +67,4 @@ const GlucoseTable: React.FC<GlucoseTableProps> = ({ glucoseData }) => {
   );
 };
 
-export default GlucoseTable;
-// codigo anterior
+export default GlucoseQueueTable;
