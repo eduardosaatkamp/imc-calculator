@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import PersonMeasurement from '../assets/person_measurement.png';
+import PersonMeasurement from '../assets/An_illustration_representing_fasting_blood_glucose.png';
 
 const Card = styled.div`
   width: 95%;
