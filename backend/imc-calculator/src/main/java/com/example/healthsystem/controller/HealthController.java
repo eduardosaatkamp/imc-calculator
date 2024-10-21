@@ -20,9 +20,9 @@ public class HealthController {
 
     // Endpoint para criar ou atualizar dados de IMC ou Glicemia
     @PostMapping
-    public ResponseEntity<?> createOrUpdateCliente(@RequestBody Health health) {
+    public ResponseEntity<Health> createOrUpdateCliente(@RequestBody Health health) {
         if (health.getNome() == null || health.getNome().trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("O campo 'nome' é obrigatório.");
+            return ResponseEntity.badRequest().body(null);
         }
 
         // Verifica se pelo menos uma das combinações de dados está presente
@@ -30,11 +30,44 @@ public class HealthController {
         boolean isValidGlicemiaInput = health.getGlicemiaCliente() != null;
 
         if (!isValidImcInput && !isValidGlicemiaInput) {
-            return ResponseEntity.badRequest().body("Forneça dados de IMC (peso e altura) ou glicemia.");
+            return ResponseEntity.badRequest().body(null);
         }
 
-        healthService.createOrUpdateCliente(health);
-        return new ResponseEntity<>("Dados do cliente processados com sucesso.", HttpStatus.OK);
+        // Calcular o IMC e definir observações
+        if (isValidImcInput) {
+            double imc = health.getPeso() / (health.getAltura() * health.getAltura());
+            health.setImcCliente(imc);
+
+            // Adiciona a observação de IMC
+            if (imc < 18.5) {
+                health.setObsImc("Abaixo do peso");
+            } else if (imc >= 18.5 && imc < 24.9) {
+                health.setObsImc("Peso normal");
+            } else if (imc >= 25 && imc < 29.9) {
+                health.setObsImc("Sobrepeso");
+            } else {
+                health.setObsImc("Obesidade");
+            }
+        }
+
+        // Adiciona a observação de glicemia
+        if (isValidGlicemiaInput) {
+            if (health.getGlicemiaCliente() < 70) {
+                health.setObsGlicemia("Hipoglicemia");
+            } else if (health.getGlicemiaCliente() >= 70 && health.getGlicemiaCliente() <= 99) {
+                health.setObsGlicemia("Normal");
+            } else if (health.getGlicemiaCliente() >= 100 && health.getGlicemiaCliente() <= 125) {
+                health.setObsGlicemia("Pré-diabetes");
+            } else {
+                health.setObsGlicemia("Diabetes");
+            }
+        }
+
+        // Salvar os dados do cliente no banco de dados
+        Health savedHealth = healthService.createOrUpdateCliente(health);
+
+        // Retornar o objeto atualizado
+        return ResponseEntity.ok(savedHealth);
     }
 
     // Endpoint para obter um cliente por ID
@@ -60,8 +93,6 @@ public class HealthController {
         return ResponseEntity.ok(clientesGlicemia);
     }
 
-    // --- INÍCIO: Novos endpoints para editar e excluir ---
-
     // Endpoint para atualizar um cliente existente
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCliente(@PathVariable Long id, @RequestBody Health health) {
@@ -75,10 +106,36 @@ public class HealthController {
         healthToUpdate.setNome(health.getNome());
         healthToUpdate.setPeso(health.getPeso());
         healthToUpdate.setAltura(health.getAltura());
-        healthToUpdate.setImcCliente(health.getImcCliente());
-        healthToUpdate.setObsImc(health.getObsImc());
-        healthToUpdate.setGlicemiaCliente(health.getGlicemiaCliente());
-        healthToUpdate.setObsGlicemia(health.getObsGlicemia());
+
+        // Recalcula o IMC e as observações, se necessário
+        boolean isValidImcInput = health.getPeso() != null && health.getAltura() != null;
+        if (isValidImcInput) {
+            double imc = health.getPeso() / (health.getAltura() * health.getAltura());
+            healthToUpdate.setImcCliente(imc);
+
+            if (imc < 18.5) {
+                healthToUpdate.setObsImc("Abaixo do peso");
+            } else if (imc >= 18.5 && imc < 24.9) {
+                healthToUpdate.setObsImc("Peso normal");
+            } else if (imc >= 25 && imc < 29.9) {
+                healthToUpdate.setObsImc("Sobrepeso");
+            } else {
+                healthToUpdate.setObsImc("Obesidade");
+            }
+        }
+
+        boolean isValidGlicemiaInput = health.getGlicemiaCliente() != null;
+        if (isValidGlicemiaInput) {
+            if (health.getGlicemiaCliente() < 70) {
+                healthToUpdate.setObsGlicemia("Hipoglicemia");
+            } else if (health.getGlicemiaCliente() >= 70 && health.getGlicemiaCliente() <= 99) {
+                healthToUpdate.setObsGlicemia("Normal");
+            } else if (health.getGlicemiaCliente() >= 100 && health.getGlicemiaCliente() <= 125) {
+                healthToUpdate.setObsGlicemia("Pré-diabetes");
+            } else {
+                healthToUpdate.setObsGlicemia("Diabetes");
+            }
+        }
 
         healthService.createOrUpdateCliente(healthToUpdate);
         return new ResponseEntity<>("Cliente atualizado com sucesso.", HttpStatus.OK);
@@ -95,7 +152,4 @@ public class HealthController {
         healthService.deleteCliente(id);
         return new ResponseEntity<>("Cliente excluído com sucesso.", HttpStatus.OK);
     }
-
-    // --- FIM: Novos endpoints para editar e excluir ---
 }
-
