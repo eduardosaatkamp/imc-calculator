@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ImcForm from './components/ImcForm';
-import ImcTable from './components/ImcTable';
+import ImcTable from './components/ImcTable'; // Tabela estática de IMC
 import GlucoseForm from './components/GlucoseForm';
 import GlucoseQueueTable from './components/GlucoseQueueTable';
 import styled from 'styled-components';
 import Modal from './components/Modal';
-import ImcModalTable from './components/ImcModalTable';
-import GlucoseModalTable from './components/GlucoseModalTable'; // Nome correto do arquivo
+import ImcModalTable from './components/ImcModalTable'; // Tabela dinâmica de IMC com exclusão
+import GlucoseModalTable from './components/GlucoseModalTable'; // Tabela dinâmica de glicemia com exclusão
 import axios from 'axios';
 
 const Container = styled.div`
@@ -67,7 +67,7 @@ const AppTitle = styled.h1`
 const App = () => {
   const { i18n, t } = useTranslation();
   const [imcData, setImcData] = useState<
-    { nome: string; imcCliente: number; obsImc: string; peso: number; altura: number }[]
+    { id: number; nome: string; imcCliente: number; descricao: string; obsImc: string; peso: number; altura: number }[]
   >([]);
   const [glucoseData, setGlucoseData] = useState<
     { id: number; nome: string; glicemiaCliente: number; obsGlicemia: string }[]
@@ -83,10 +83,21 @@ const App = () => {
   const fetchImcData = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/cliente?tipo=imc');
-      setImcData(response.data.map((item: any) => ({
-        ...item,
-        obsImc: item.obsImc || ''
-      })));
+      setImcData(response.data.map((item: any) => {
+        const descricao = item.imcCliente < 18.5 ? 'Abaixo do peso' :
+          item.imcCliente < 24.9 ? 'Peso normal' :
+          item.imcCliente < 29.9 ? 'Sobrepeso' : 'Obesidade';
+
+        return {
+          id: item.id,
+          nome: item.nome,
+          imcCliente: item.imcCliente,
+          descricao,
+          obsImc: item.obsImc || '',
+          peso: item.peso,
+          altura: item.altura,
+        };
+      }));
       setShowImcModal(true);
     } catch (error) {
       console.error('Erro ao buscar dados de IMC:', error);
@@ -98,8 +109,10 @@ const App = () => {
     try {
       const response = await axios.get('http://localhost:8080/api/cliente?tipo=glicemia');
       setGlucoseData(response.data.map((item: any) => ({
-        ...item,
-        id: item.id || 0 // Adiciona o 'id' se estiver ausente
+        id: item.id || 0,
+        nome: item.nome,
+        glicemiaCliente: item.glicemiaCliente,
+        obsGlicemia: item.obsGlicemia || '',
       })));
       setShowGlucoseModal(true);
     } catch (error) {
@@ -125,14 +138,14 @@ const App = () => {
 
       <div style={{ marginTop: '60px' }}>
         <ImcForm fetchImcData={fetchImcData} />
-        <ImcTable />
+        <ImcTable /> {/* Tabela estática de IMC */}
         <GlucoseForm fetchGlucoseData={fetchGlucoseData} />
         <GlucoseQueueTable />
       </div>
 
       {showImcModal && (
         <Modal onClose={() => setShowImcModal(false)}>
-          <ImcModalTable imcData={imcData} />
+          <ImcModalTable imcData={imcData} fetchImcData={fetchImcData} /> {/* Modal de IMC com exclusão */}
         </Modal>
       )}
 
