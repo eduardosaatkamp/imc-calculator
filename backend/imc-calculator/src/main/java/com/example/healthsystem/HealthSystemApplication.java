@@ -1,13 +1,13 @@
-package com.example;
+package com.example.healthsystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ImcCalculatorApplication {
+public class HealthSystemApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ImcCalculatorApplication.class, args);
+		SpringApplication.run(HealthSystemApplication.class, args);
 	}
 
 }

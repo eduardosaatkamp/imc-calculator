@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  health-db-21-10:
+    image: postgres:latest
+    container_name: health-db-21-10
+    environment:
+      POSTGRES_DB: health_db_21_10
+      POSTGRES_USER: imc_user_21_10
+      POSTGRES_PASSWORD: imc_pass_21_10
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_21_10:/var/lib/postgresql/data
+
+volumes:
+  pgdata_21_10:

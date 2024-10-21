@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: unified_user_21_10
+      changes:
+        - createTable:
+            tableName: health_record
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: weight
+                  type: decimal(5,2)
+              - column:
+                  name: height
+                  type: decimal(5,2)
+              - column:
+                  name: calculated_imc
+                  type: decimal(5,2)
+              - column:
+                  name: imc_observation
+                  type: varchar(255)
+              - column:
+                  name: glucose_level
+                  type: decimal(5,2)
+              - column:
+                  name: glucose_observation
+                  type: varchar(255)
+              - column:
+                  name: record_type
+                  type: varchar(20)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
