@@ -59,9 +59,10 @@ const SecondaryButton = styled(Button)`
 
 interface GlucoseFormProps {
   fetchGlucoseData: () => void;
+  showGlucoseModal?: (nome: string, glicemiaCliente: number, obsGlicemia: string) => void;
 }
 
-const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData }) => {
+const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData, showGlucoseModal }) => {
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [glucose, setGlucose] = useState('');
@@ -70,20 +71,23 @@ const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData }) => {
     const glucoseNum = parseFloat(glucose);
 
     if (!name || isNaN(glucoseNum) || glucoseNum <= 0) {
-      alert(t('error.fillFields'));
+      console.log(t('error.fillFields'));
       return;
     }
 
     try {
-      await axios.post('http://localhost:8080/api/cliente', {
+      const response = await axios.post('http://localhost:8080/api/cliente', {
         nome: name,
         glicemiaCliente: glucoseNum,
       });
 
-      alert(t('patientList.successRegister'));
+      if (response.data && response.data.glicemiaCliente && showGlucoseModal) {
+        showGlucoseModal(response.data.nome, response.data.glicemiaCliente, response.data.obsGlicemia);
+      }
+      
       fetchGlucoseData(); // Atualiza os dados após o registro
     } catch (error) {
-      alert(t('error.registerPatient'));
+      console.log(t('error.registerPatient'));
     }
   };
 
@@ -118,4 +122,3 @@ const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData }) => {
 };
 
 export default GlucoseForm;
-// 
