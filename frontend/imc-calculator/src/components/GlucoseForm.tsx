@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import GlucoseImage from '../assets/An_illustration_representing_fasting_blood_glucose.png';
+import BloodDrop from '../assets/blood_drop.png';
 
 const Card = styled.div`
   width: 95%;
@@ -49,14 +49,18 @@ const Button = styled.button`
   }
 `;
 
-const GlucoseForm = () => {
+interface GlucoseFormProps {
+  fetchGlucoseData: () => void;
+}
+
+const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData }) => {
   const { t } = useTranslation();
   const [name, setName] = useState('');
-  const [glucose, setGlucose] = useState('');
+  const [glucoseLevel, setGlucoseLevel] = useState('');
   const [message, setMessage] = useState<string | null>(null);
 
   const handleRegisterGlucose = async () => {
-    if (!name || !glucose) {
+    if (!name || !glucoseLevel) {
       setMessage(t('error.fillFields'));
       return;
     }
@@ -64,9 +68,10 @@ const GlucoseForm = () => {
     try {
       await axios.post('http://localhost:8080/api/cliente', {
         nome: name,
-        glicemiaCliente: parseFloat(glucose),
+        glicemiaCliente: parseFloat(glucoseLevel),
       });
       setMessage(t('patientList.successRegister'));
+      fetchGlucoseData(); // Atualiza os dados após o envio
     } catch (error) {
       setMessage(t('error.registerPatient'));
     }
@@ -74,7 +79,7 @@ const GlucoseForm = () => {
 
   return (
     <Card>
-      <RoundImage src={GlucoseImage} alt={t('glucoseImageAlt')} />
+      <RoundImage src={BloodDrop} alt={t('glucoseImageAlt')} />
       <h2>{t('triageTitle')}</h2>
       <div>
         <label>{t('patientList.name')}:</label>
@@ -89,8 +94,8 @@ const GlucoseForm = () => {
         <label>{t('patientList.glucose')}:</label>
         <Input
           type="text"
-          value={glucose}
-          onChange={(e) => setGlucose(e.target.value.replace(/[^0-9]/g, ''))}
+          value={glucoseLevel}
+          onChange={(e) => setGlucoseLevel(e.target.value.replace(/[^0-9.]/g, ''))}
           placeholder={t('placeholders.glucose')}
         />
       </div>
@@ -101,4 +106,3 @@ const GlucoseForm = () => {
 };
 
 export default GlucoseForm;
-// codigo anterior

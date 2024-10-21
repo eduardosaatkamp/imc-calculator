@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ImcForm from './components/ImcForm';
 import ImcTable from './components/ImcTable';
 import GlucoseForm from './components/GlucoseForm';
-import GlucoseTable from './components/GlucoseTable';
 import styled from 'styled-components';
+import Modal from './components/Modal';
+import GlucoseTable from './components/GlucoseTable';
+import axios from 'axios';
 
 const Container = styled.div`
   display: flex;
@@ -56,9 +58,24 @@ const AppTitle = styled.h1`
 
 const App = () => {
   const { i18n, t } = useTranslation();
+  const [glucoseData, setGlucoseData] = useState<
+    { nome: string; glicemiaCliente: number; obsGlicemia: string }[]
+  >([]);
+  const [showModal, setShowModal] = useState(false);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
+  };
+
+  // Função para buscar dados de glicemia e abrir o modal
+  const fetchGlucoseData = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/cliente?tipo=glicemia');
+      setGlucoseData(response.data);
+      setShowModal(true);
+    } catch (error) {
+      console.error('Erro ao buscar dados de glicemia:', error);
+    }
   };
 
   return (
@@ -84,9 +101,15 @@ const App = () => {
       <div style={{ marginTop: '60px' }}>
         <ImcForm />
         <ImcTable />
-        <GlucoseForm />
-        <GlucoseTable />
+        <GlucoseForm fetchGlucoseData={fetchGlucoseData} />
       </div>
+
+      {/* Modal de Glicemia */}
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          <GlucoseTable glucoseData={glucoseData} />
+        </Modal>
+      )}
     </Container>
   );
 };

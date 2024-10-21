@@ -1,28 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-// Interface para os dados de glicemia
-interface GlicemiaPaciente {
-  nome: string;
-  glicemiaCliente: number;
-  obsGlicemia: string;
-}
-
-// Estilos do card
 const Card = styled.div`
-  max-width: 600px;
-  margin: 20px auto;
+  width: 95%;
+  max-width: 400px;
   padding: 20px;
-  background-color: #fff;
   border: 2px solid #007bff;
   border-radius: 8px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: white;
   text-align: center;
+  overflow: hidden;
+  margin-top: 20px;
 `;
 
-// Estilos da tabela
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -42,27 +34,16 @@ const Td = styled.td`
   text-align: center;
 `;
 
-const GlucoseTable: React.FC = () => {
+interface GlucoseTableProps {
+  glucoseData: { nome: string; glicemiaCliente: number; obsGlicemia: string }[];
+}
+
+const GlucoseTable: React.FC<GlucoseTableProps> = ({ glucoseData }) => {
   const { t } = useTranslation();
-  const [pacientes, setPacientes] = useState<GlicemiaPaciente[]>([]);
-
-  // Função para buscar dados de glicemia
-  const fetchGlucoseData = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/api/cliente?tipo=glicemia');
-      setPacientes(response.data);
-    } catch (error) {
-      console.error('Erro ao buscar dados de glicemia:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchGlucoseData();
-  }, []); // Executa ao carregar o componente
 
   return (
     <Card>
-      <h2>{t('patientList.title')} - {t('triageTitle')}</h2>
+      <h2>{t('patientList.title')}</h2>
       <Table>
         <thead>
           <tr>
@@ -72,7 +53,7 @@ const GlucoseTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {pacientes.map((paciente, index) => (
+          {glucoseData.map((paciente, index) => (
             <tr key={index}>
               <Td>{paciente.nome}</Td>
               <Td>{paciente.glicemiaCliente}</Td>
