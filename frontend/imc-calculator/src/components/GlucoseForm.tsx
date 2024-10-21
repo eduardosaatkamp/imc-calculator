@@ -85,7 +85,7 @@ const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData, showGlucose
         showGlucoseModal(response.data.nome, response.data.glicemiaCliente, response.data.obsGlicemia);
       }
       
-      fetchGlucoseData(); // Atualiza os dados após o registro
+      fetchGlucoseData(); 
     } catch (error) {
       console.log(t('error.registerPatient'));
     }

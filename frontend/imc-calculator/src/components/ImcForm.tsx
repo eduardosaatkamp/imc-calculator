@@ -68,7 +68,7 @@ const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
   const [height, setHeight] = useState('');
 
   const formatHeight = (height: string) => {
-    // Se a altura for fornecida como um número inteiro, como "180", converte para "1.80"
+
     if (/^\d{3}$/.test(height)) {
       return `${height[0]}.${height.substring(1)}`;
     }
@@ -91,7 +91,6 @@ const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
         altura: heightNum,
       });
 
-      // Atualiza os dados após o registro
       fetchImcData();
     } catch (error) {
       alert(t('error.registerPatient'));

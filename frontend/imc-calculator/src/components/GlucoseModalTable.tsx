@@ -37,7 +37,7 @@ const DeleteButton = styled.button`
 
 interface GlucoseModalTableProps {
   glucoseData: { id: number; nome: string; glicemiaCliente: number; obsGlicemia: string }[];
-  fetchGlucoseData: () => void; // Função para atualizar os dados após exclusão
+  fetchGlucoseData: () => void; 
 }
 
 const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetchGlucoseData }) => {
@@ -45,32 +45,27 @@ const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetc
     return <p>Nenhum dado de glicemia encontrado.</p>;
   }
 
-  // Ordena os dados por glicemia em ordem decrescente
   const sortedData = [...glucoseData].sort((a, b) => b.glicemiaCliente - a.glicemiaCliente);
 
-  // Identifica a maior, menor e o último registro de glicemia
   const highestGlucose = sortedData[0];
   const lowestGlucose = sortedData[sortedData.length - 1];
-  const lastEntry = glucoseData[glucoseData.length - 1]; // Último registro enviado
+  const lastEntry = glucoseData[glucoseData.length - 1]; 
 
-  // Gera a lista final de dados, garantindo até 10 registros
   const finalData = [highestGlucose, lowestGlucose, lastEntry, ...sortedData.filter(
     (entry) => entry !== highestGlucose && entry !== lowestGlucose && entry !== lastEntry
-  )].slice(0, 10); // Limita a 10 registros
+  )].slice(0, 10); 
 
-  // Função para excluir um registro de glicemia com temporizador
+
   const handleDelete = async (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir este registro?')) {
       try {
         const response = await axios.delete(`http://localhost:8080/api/cliente/${id}`);
         
-        // Verifica se a exclusão foi bem-sucedida
         if (response.status === 200) {
           alert('Registro excluído com sucesso. Atualizando a lista...');
 
-          // Adiciona um temporizador de 3 segundos antes de atualizar a lista
           setTimeout(async () => {
-            await fetchGlucoseData(); // Atualiza os dados após exclusão
+            await fetchGlucoseData(); 
           }, 3000);
         } else {
           alert('Não foi possível excluir o registro. Tente novamente.');

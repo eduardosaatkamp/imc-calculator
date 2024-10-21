@@ -6,6 +6,5 @@ export interface ImcRecord {
     imc: number;
   }
   
-  // Adicione esta linha ao final do arquivo:
   export {};
   

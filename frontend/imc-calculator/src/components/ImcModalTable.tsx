@@ -45,14 +45,13 @@ const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) 
     return <p>Nenhum dado de IMC encontrado.</p>;
   }
 
-  // Função para excluir um registro de IMC
   const handleDelete = async (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir este registro?')) {
       try {
         const response = await axios.delete(`http://localhost:8080/api/cliente/${id}`);
         
         if (response.status === 200) {
-          await fetchImcData(); // Atualiza os dados após exclusão
+          await fetchImcData(); 
           alert('Registro excluído com sucesso.');
         } else {
           alert('Não foi possível excluir o registro. Tente novamente.');

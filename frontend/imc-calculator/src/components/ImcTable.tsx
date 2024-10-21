@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-// Estilos do Card
 const Card = styled.div`
   width: 80%;
   max-width: 500px;
@@ -16,7 +15,6 @@ const Card = styled.div`
   margin-top: 20px;
 `;
 
-// Estilos da Tabela
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ImcForm from './components/ImcForm';
-import ImcTable from './components/ImcTable'; // Tabela estática de IMC
+import ImcTable from './components/ImcTable'; 
 import GlucoseForm from './components/GlucoseForm';
 import GlucoseQueueTable from './components/GlucoseQueueTable';
 import styled from 'styled-components';
 import Modal from './components/Modal';
-import ImcModalTable from './components/ImcModalTable'; // Tabela dinâmica de IMC com exclusão
-import GlucoseModalTable from './components/GlucoseModalTable'; // Tabela dinâmica de glicemia com exclusão
+import ImcModalTable from './components/ImcModalTable'; 
+import GlucoseModalTable from './components/GlucoseModalTable';
 import axios from 'axios';
 
 const Container = styled.div`
@@ -79,7 +79,6 @@ const App = () => {
     i18n.changeLanguage(lng);
   };
 
-  // Função para buscar dados de IMC
   const fetchImcData = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/cliente?tipo=imc');
@@ -104,7 +103,6 @@ const App = () => {
     }
   };
 
-  // Função para buscar dados de glicemia
   const fetchGlucoseData = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/cliente?tipo=glicemia');
@@ -138,14 +136,14 @@ const App = () => {
 
       <div style={{ marginTop: '60px' }}>
         <ImcForm fetchImcData={fetchImcData} />
-        <ImcTable /> {/* Tabela estática de IMC */}
+        <ImcTable /> 
         <GlucoseForm fetchGlucoseData={fetchGlucoseData} />
         <GlucoseQueueTable />
       </div>
 
       {showImcModal && (
         <Modal onClose={() => setShowImcModal(false)}>
-          <ImcModalTable imcData={imcData} fetchImcData={fetchImcData} /> {/* Modal de IMC com exclusão */}
+          <ImcModalTable imcData={imcData} fetchImcData={fetchImcData} /> 
         </Modal>
       )}
 
