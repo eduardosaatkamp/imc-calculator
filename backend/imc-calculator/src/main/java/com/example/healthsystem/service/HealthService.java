@@ -18,6 +18,9 @@ public class HealthService {
         // Verifica se o dado de peso e altura está presente para calcular o IMC
         if (health.getPeso() != null && health.getAltura() != null) {
             double imc = health.getPeso() / (health.getAltura() * health.getAltura());
+
+            // Arredonda o IMC para quatro dígitos decimais
+            imc = Math.round(imc * 100) / 100.0;
             health.setImcCliente(imc);
 
             // Define a observação do IMC com base no valor

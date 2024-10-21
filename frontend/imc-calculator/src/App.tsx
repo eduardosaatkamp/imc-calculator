@@ -67,7 +67,7 @@ const AppTitle = styled.h1`
 const App = () => {
   const { i18n, t } = useTranslation();
   const [imcData, setImcData] = useState<
-    { nome: string; imcCliente: number; peso: number; altura: number }[]
+    { nome: string; imcCliente: number; obsImc: string; peso: number; altura: number }[]
   >([]);
   const [glucoseData, setGlucoseData] = useState<
     { nome: string; glicemiaCliente: number; obsGlicemia: string }[]
@@ -82,7 +82,10 @@ const App = () => {
   const fetchImcData = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/cliente?tipo=imc');
-      setImcData(response.data);
+      setImcData(response.data.map((item: any) => ({
+        ...item,
+        obsImc: item.obsImc || '' // Ensure obsImc is included
+      })));
       setShowImcModal(true);
     } catch (error) {
       console.error('Erro ao buscar dados de IMC:', error);
