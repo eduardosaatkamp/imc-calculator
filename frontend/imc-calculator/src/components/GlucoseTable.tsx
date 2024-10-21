@@ -24,14 +24,21 @@ const Td = styled.td<{ highlighted?: boolean; last?: boolean }>`
 `;
 
 interface GlucoseTableProps {
-  glucoseData: { nome: string; glicemiaCliente: number; obsGlicemia: string }[];
+  glucoseData: { nome: string; glicemiaCliente: number }[];
 }
 
 const GlucoseTable: React.FC<GlucoseTableProps> = ({ glucoseData }) => {
-  // Ordenar dados para mostrar o maior e o menor valor de glicemia nas duas primeiras linhas
+  // Ordenar os dados para mostrar o maior e o menor valor de glicemia nas duas primeiras linhas
   const sortedData = [...glucoseData].sort((a, b) => b.glicemiaCliente - a.glicemiaCliente);
-  const topTwo = [sortedData[0], sortedData[sortedData.length - 1]]; // Maior e menor glicemia
-  const limitedData = [...topTwo, sortedData[sortedData.length - 1], ...sortedData.slice(0, 7)]; // 10 registros no total
+
+  // Selecionar maior, menor e o último registro
+  const highestGlucose = sortedData[0];
+  const lowestGlucose = sortedData[sortedData.length - 1];
+  const lastGlucose = sortedData.length > 1 ? sortedData[sortedData.length - 2] : sortedData[0];
+
+  // Limitar a exibição a 10 registros no total
+  const recentData = sortedData.slice(1, 7);
+  const limitedData = [highestGlucose, lowestGlucose, lastGlucose, ...recentData].slice(0, 10);
 
   return (
     <Table>
@@ -39,15 +46,13 @@ const GlucoseTable: React.FC<GlucoseTableProps> = ({ glucoseData }) => {
         <tr>
           <Th>Nome</Th>
           <Th>Glicemia</Th>
-          <Th>Observação</Th>
         </tr>
       </thead>
       <tbody>
         {limitedData.map((paciente, index) => (
           <tr key={index}>
-            <Td highlighted={index < 2}>{paciente.nome}</Td>
-            <Td highlighted={index < 2}>{paciente.glicemiaCliente}</Td>
-            <Td last={index === 2}>{paciente.obsGlicemia}</Td>
+            <Td highlighted={index === 0 || index === 1}>{paciente.nome}</Td>
+            <Td highlighted={index === 0 || index === 1}>{paciente.glicemiaCliente}</Td>
           </tr>
         ))}
       </tbody>

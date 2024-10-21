@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import BloodDrop from '../assets/blood_drop.png';
+import PersonMeasurement from '../assets/person_measurement.png';
 
 const Card = styled.div`
   width: 95%;
@@ -44,8 +44,16 @@ const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  margin-right: 10px;
   &:hover {
     background-color: #0056b3;
+  }
+`;
+
+const SecondaryButton = styled(Button)`
+  background-color: #28a745;
+  &:hover {
+    background-color: #218838;
   }
 `;
 
@@ -56,30 +64,32 @@ interface GlucoseFormProps {
 const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData }) => {
   const { t } = useTranslation();
   const [name, setName] = useState('');
-  const [glucoseLevel, setGlucoseLevel] = useState('');
-  const [message, setMessage] = useState<string | null>(null);
+  const [glucose, setGlucose] = useState('');
 
   const handleRegisterGlucose = async () => {
-    if (!name || !glucoseLevel) {
-      setMessage(t('error.fillFields'));
+    const glucoseNum = parseFloat(glucose);
+
+    if (!name || isNaN(glucoseNum) || glucoseNum <= 0) {
+      alert(t('error.fillFields'));
       return;
     }
 
     try {
       await axios.post('http://localhost:8080/api/cliente', {
         nome: name,
-        glicemiaCliente: parseFloat(glucoseLevel),
+        glicemiaCliente: glucoseNum,
       });
-      setMessage(t('patientList.successRegister'));
-      fetchGlucoseData(); // Atualiza os dados após o envio
+
+      alert(t('patientList.successRegister'));
+      fetchGlucoseData(); // Atualiza os dados após o registro
     } catch (error) {
-      setMessage(t('error.registerPatient'));
+      alert(t('error.registerPatient'));
     }
   };
 
   return (
     <Card>
-      <RoundImage src={BloodDrop} alt={t('glucoseImageAlt')} />
+      <RoundImage src={PersonMeasurement} alt={t('glucoseImageAlt')} />
       <h2>{t('triageTitle')}</h2>
       <div>
         <label>{t('patientList.name')}:</label>
@@ -94,16 +104,18 @@ const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData }) => {
         <label>{t('patientList.glucose')}:</label>
         <Input
           type="text"
-          value={glucoseLevel}
-          onChange={(e) => setGlucoseLevel(e.target.value.replace(/[^0-9.]/g, ''))}
+          value={glucose}
+          onChange={(e) => setGlucose(e.target.value.replace(/[^0-9.]/g, ''))}
           placeholder={t('placeholders.glucose')}
         />
       </div>
-      <Button onClick={handleRegisterGlucose}>{t('patientList.register')}</Button>
-      {message && <p>{message}</p>}
+      <div>
+        <Button onClick={handleRegisterGlucose}>{t('patientList.register')}</Button>
+        <SecondaryButton onClick={fetchGlucoseData}>{t('patientList.viewQueue')}</SecondaryButton>
+      </div>
     </Card>
   );
 };
 
 export default GlucoseForm;
-// codigo anterior
+// 

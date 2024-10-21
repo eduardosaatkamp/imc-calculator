@@ -44,8 +44,16 @@ const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  margin-right: 10px;
   &:hover {
     background-color: #0056b3;
+  }
+`;
+
+const SecondaryButton = styled(Button)`
+  background-color: #28a745;
+  &:hover {
+    background-color: #218838;
   }
 `;
 
@@ -58,22 +66,15 @@ const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
   const [name, setName] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
-  const [message, setMessage] = useState<string | null>(null);
 
-  const calculateImc = (weight: number, height: number) => {
-    return (weight / (height * height)).toFixed(1);
-  };
-
-  const handleCalculateImc = async () => {
+  const handleRegisterImc = async () => {
     const weightNum = parseFloat(weight);
     const heightNum = parseFloat(height);
 
     if (!name || isNaN(weightNum) || isNaN(heightNum) || heightNum === 0) {
-      setMessage(t('error.fillFields'));
+      alert(t('error.fillFields'));
       return;
     }
-
-    const imc = calculateImc(weightNum, heightNum);
 
     try {
       await axios.post('http://localhost:8080/api/cliente', {
@@ -82,12 +83,10 @@ const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
         altura: heightNum,
       });
 
-      // Chama a função para buscar dados de IMC e abrir o modal
-      fetchImcData();
-
-      setMessage(t('patientList.successRegister'));
+      alert(t('patientList.successRegister'));
+      fetchImcData(); // Atualiza os dados após o registro
     } catch (error) {
-      setMessage(t('error.registerPatient'));
+      alert(t('error.registerPatient'));
     }
   };
 
@@ -122,8 +121,10 @@ const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
           placeholder={t('Height (m)')}
         />
       </div>
-      <Button onClick={handleCalculateImc}>{t('Calculate BMI')}</Button>
-      {message && <p>{message}</p>}
+      <div>
+        <Button onClick={handleRegisterImc}>{t('patientList.register')}</Button>
+        <SecondaryButton onClick={fetchImcData}>{t('patientList.viewQueue')}</SecondaryButton>
+      </div>
     </Card>
   );
 };

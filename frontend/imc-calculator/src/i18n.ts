@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      "appTitle": "BMI and Glucose Control",
       "IMC Calculator": "BMI Calculator",
       "Weight (kg)": "Weight (kg)",
       "Height (m)": "Height (m)",
@@ -47,6 +48,7 @@ const resources = {
   },
   pt: {
     translation: {
+      "appTitle": "Controle de IMC e Glicemia",
       "IMC Calculator": "Calculadora de IMC",
       "Weight (kg)": "Peso (kg)",
       "Height (m)": "Altura (m)",
@@ -66,7 +68,7 @@ const resources = {
         "cancel": "Cancelar",
         "register": "Registrar Paciente",
         "viewQueue": "Ver Fila",
-        "successRegister": "Paciente registrado com sucesso"
+        "successRegister": "Paciente registrado com sucesso",
       },
       "placeholders": {
         "name": "Nome do paciente",
@@ -84,7 +86,8 @@ const resources = {
         "deletePatient": "Erro ao excluir paciente:",
         "updatePatient": "Erro ao atualizar paciente:",
         "fillFields": "Por favor, preencha todos os campos corretamente.",
-        "registerPatient": "Erro ao registrar paciente:"
+        "registerPatient": "Erro ao registrar paciente:",
+        
       }
     }
   }

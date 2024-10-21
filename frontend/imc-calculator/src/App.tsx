@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ImcForm from './components/ImcForm';
-import ImcTable from './components/ImcTable';
+import ImcTable from './components/ImcTable'; // Tabela estática de IMC
 import GlucoseForm from './components/GlucoseForm';
-import GlucoseQueueTable from './components/GlucoseQueueTable';
+import GlucoseQueueTable from './components/GlucoseQueueTable'; // Tabela estática de glicemia
 import styled from 'styled-components';
 import Modal from './components/Modal';
 import ImcModalTable from './components/ImcModalTable';
-import GlucoseTable from './components/GlucoseTable';
+import GlucoseTable from './components/GlucoseTable'; // Tabela dinâmica de glicemia
 import axios from 'axios';
 
 const Container = styled.div`
@@ -26,11 +26,17 @@ const NavBar = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #007bff;
-  padding: 10px 0;
+  padding: 10px 20px;
   color: white;
   position: fixed;
   top: 0;
   z-index: 1000;
+`;
+
+const NavContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
 `;
 
 const LanguageSwitcher = styled.div`
@@ -53,9 +59,9 @@ const Flag = styled.img`
 `;
 
 const AppTitle = styled.h1`
-  font-size: 1.8em;
+  font-size: 1.5em;
   color: white;
-  margin: 0 10px;
+  margin: 0;
 `;
 
 const App = () => {
@@ -86,7 +92,7 @@ const App = () => {
   const fetchGlucoseData = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/cliente?tipo=glicemia');
-      setGlucoseData(response.data);
+      setGlucoseData(response.data); // Define os dados de glicemia corretamente
       setShowGlucoseModal(true);
     } catch (error) {
       console.error('Erro ao buscar dados de glicemia:', error);
@@ -96,22 +102,24 @@ const App = () => {
   return (
     <Container>
       <NavBar>
-        <LanguageSwitcher>
-          <FlagButton onClick={() => changeLanguage('pt')}>
-            <Flag src="https://catamphetamine.gitlab.io/country-flag-icons/3x2/BR.svg" alt="Português" />
-          </FlagButton>
-          <AppTitle>{t('triageTitle')}</AppTitle>
-          <FlagButton onClick={() => changeLanguage('en')}>
-            <Flag src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" alt="English" />
-          </FlagButton>
-        </LanguageSwitcher>
+        <NavContent>
+          <AppTitle>{t('appTitle')}</AppTitle>
+          <LanguageSwitcher>
+            <FlagButton onClick={() => changeLanguage('pt')}>
+              <Flag src="https://catamphetamine.gitlab.io/country-flag-icons/3x2/BR.svg" alt="Português" />
+            </FlagButton>
+            <FlagButton onClick={() => changeLanguage('en')}>
+              <Flag src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" alt="English" />
+            </FlagButton>
+          </LanguageSwitcher>
+        </NavContent>
       </NavBar>
 
       <div style={{ marginTop: '60px' }}>
         <ImcForm fetchImcData={fetchImcData} />
-        <ImcTable />
+        <ImcTable /> {/* Tabela estática de IMC permanece */}
         <GlucoseForm fetchGlucoseData={fetchGlucoseData} />
-        <GlucoseQueueTable />
+        <GlucoseQueueTable /> {/* Tabela estática de glicemia permanece */}
       </div>
 
       {/* Modal de IMC */}
@@ -124,7 +132,7 @@ const App = () => {
       {/* Modal de Glicemia */}
       {showGlucoseModal && (
         <Modal onClose={() => setShowGlucoseModal(false)}>
-          <GlucoseTable glucoseData={glucoseData} />
+          <GlucoseTable glucoseData={glucoseData} /> {/* Tabela dinâmica de glicemia */}
         </Modal>
       )}
     </Container>
