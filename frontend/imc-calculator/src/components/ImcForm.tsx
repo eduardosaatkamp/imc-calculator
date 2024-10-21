@@ -67,14 +67,29 @@ const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
 
+  const formatHeight = (height: string) => {
+    // Se a altura for fornecida como um número inteiro, como "180", converte para "1.80"
+    if (/^\d{3}$/.test(height)) {
+      return `${height[0]}.${height.substring(1)}`;
+    }
+    return height;
+  };
+
+  const calculateImc = (weight: number, height: number) => {
+    return (weight / (height * height)).toFixed(1);
+  };
+
   const handleRegisterImc = async () => {
     const weightNum = parseFloat(weight);
-    const heightNum = parseFloat(height);
+    const heightNum = parseFloat(formatHeight(height)); // Formata a altura antes de calcular o IMC
 
     if (!name || isNaN(weightNum) || isNaN(heightNum) || heightNum === 0) {
       alert(t('error.fillFields'));
       return;
     }
+
+    // Calcula o IMC antes de enviar para o backend
+    const imc = calculateImc(weightNum, heightNum);
 
     try {
       await axios.post('http://localhost:8080/api/cliente', {
@@ -83,7 +98,9 @@ const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
         altura: heightNum,
       });
 
-      alert(t('patientList.successRegister'));
+      // Alerta de sucesso com o IMC calculado
+      alert(`${t('patientList.successRegister')} \nNome: ${name} \nPeso: ${weightNum} kg \nAltura: ${heightNum} m \nIMC: ${imc}`);
+      
       fetchImcData(); // Atualiza os dados após o registro
     } catch (error) {
       alert(t('error.registerPatient'));
@@ -117,7 +134,7 @@ const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
         <Input
           type="text"
           value={height}
-          onChange={(e) => setHeight(e.target.value.replace(/[^0-9.]/g, ''))}
+          onChange={(e) => setHeight(formatHeight(e.target.value.replace(/[^0-9]/g, '')))}
           placeholder={t('Height (m)')}
         />
       </div>
