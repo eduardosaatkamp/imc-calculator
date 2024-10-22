@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-// Importando os estilos
 import { Card, RoundImage, Input, Button, SecondaryButton } from './ImcForm.styles';
-// Importando os tipos
 import { ImcFormProps } from './ImcForm.types';
 import PersonMeasurement from '../../assets/person_measurement.png';
 

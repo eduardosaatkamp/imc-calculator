@@ -18,6 +18,16 @@ const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) 
     return <p>Nenhum dado de IMC encontrado.</p>;
   }
 
+  const sortedData = [...imcData].sort((a, b) => b.imcCliente - a.imcCliente);
+
+  const highestImc = sortedData[0];
+  const lowestImc = sortedData[sortedData.length - 1];
+  const lastEntry = imcData[imcData.length - 1];
+
+  const finalData = [highestImc, lowestImc, lastEntry, ...sortedData.filter(
+    (entry) => entry !== highestImc && entry !== lowestImc && entry !== lastEntry
+  )].slice(0, 7);
+
   const handleDelete = async (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir este registro?')) {
       try {
@@ -56,7 +66,7 @@ const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) 
           </tr>
         </thead>
         <tbody>
-          {imcData.slice(0, 7).map((paciente, index) => (
+          {finalData.map((paciente, index) => (
             <tr key={paciente.id}>
               <Td highlighted={index === 0 || index === 1 || index === 2}>{paciente.nome}</Td>
               <Td highlighted={index === 0 || index === 1 || index === 2}>{paciente.peso}</Td>
@@ -76,7 +86,6 @@ const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) 
         </tbody>
       </Table>
 
-      {/* Snackbar do MUI para exibir alertas */}
       <Snackbar 
         open={openSnackbar} 
         autoHideDuration={6000} 
