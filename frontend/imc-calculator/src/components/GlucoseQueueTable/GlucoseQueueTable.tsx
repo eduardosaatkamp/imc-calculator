@@ -14,17 +14,17 @@ const GlucoseQueueTable = () => {
 
   return (
     <Card>
-      <h2>{t('patientList.title')}</h2>
+      <h2>{t('patientList.context')}</h2>
       <Description>
-        <strong>Glicemia de Jejum:</strong> A glicemia de jejum é um teste para medir o nível de açúcar no sangue após
+        <strong>Glicemia de Jejum:</strong> é um teste para medir o nível de açúcar no sangue após
         um período de jejum de 8 horas ou mais. Valores normais estão entre <strong>70 e 99 mg/dL</strong>. Atenção para valores abaixo de 70 (hipoglicemia) ou acima de 125 (diabetes).
       </Description>
       <Table>
         <thead>
           <tr>
             <Th>{t('patientList.name')}</Th>
-            <Th>Glicemia</Th>
-            <Th>Descrição</Th>
+            <Th>{t('patientList.glucose')}</Th>
+            <Th>{t('patientList.description')}</Th>
             <Th>{t('patientList.observation')}</Th>
           </tr>
         </thead>

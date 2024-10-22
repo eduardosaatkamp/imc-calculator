@@ -14,7 +14,7 @@ const ImcTable = () => {
 
   return (
     <Card>
-      <h2>{t('patientList.title')}</h2>
+      <h2>{t('patientList.context')}</h2>
       <Description>
         <strong>IMC (Índice de Massa Corporal):</strong> O IMC é uma medida para avaliar se o peso está adequado
         em relação à altura. Valores normais estão entre <strong>18.5 e 24.9</strong>. Atenção para valores abaixo de
@@ -24,8 +24,8 @@ const ImcTable = () => {
         <thead>
           <tr>
             <Th>{t('patientList.name')}</Th>
-            <Th>IMC</Th>
-            <Th>Descrição</Th>
+            <Th>{t('patientList.bmi')}</Th>
+            <Th>{t('patientList.description')}</Th>
             <Th>{t('patientList.observation')}</Th>
           </tr>
         </thead>
