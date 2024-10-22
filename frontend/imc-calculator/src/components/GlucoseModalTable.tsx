@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import TrashIcon from '../assets/trash.svg'; // Importando o ícone de lixeira
 
 const Table = styled.table`
   width: 100%;
@@ -23,15 +24,12 @@ const Td = styled.td<{ highlighted?: boolean }>`
   border: ${({ highlighted }) => (highlighted ? '2px solid red' : '1px solid #ccc')};
 `;
 
-const DeleteButton = styled.button`
-  background-color: #dc3545;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
+const TrashIconImg = styled.img`
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   &:hover {
-    background-color: #c82333;
+    opacity: 0.7;
   }
 `;
 
@@ -54,7 +52,6 @@ const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetc
   const finalData = [highestGlucose, lowestGlucose, lastEntry, ...sortedData.filter(
     (entry) => entry !== highestGlucose && entry !== lowestGlucose && entry !== lastEntry
   )].slice(0, 7); 
-
 
   const handleDelete = async (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir este registro?')) {
@@ -94,7 +91,11 @@ const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetc
             <Td highlighted={index === 0 || index === 1 || index === 2}>{paciente.glicemiaCliente}</Td>
             <Td>{paciente.obsGlicemia}</Td>
             <Td>
-              <DeleteButton onClick={() => handleDelete(paciente.id)}>Excluir</DeleteButton>
+              <TrashIconImg 
+                src={TrashIcon} 
+                alt="Delete" 
+                onClick={() => handleDelete(paciente.id)} 
+              />
             </Td>
           </tr>
         ))}
