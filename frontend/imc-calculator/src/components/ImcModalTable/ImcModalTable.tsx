@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Table, Th, Td, TrashIconImg } from '../shared/ModalTable.styles'; 
 import { ImcModalTableProps } from './ImcModalTable.types';
 import TrashIcon from '../../assets/trash.svg';
-import { Alert, Snackbar } from '@mui/material';
+import { deleteImc } from '../../services/imcService';
+import AlertSnackbar from '../AlertSnackbar/AlertSnackbar';
 
 const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) => {
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
@@ -15,7 +15,7 @@ const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) 
   };
 
   if (imcData.length === 0) {
-    return <p>Nenhum dado de IMC encontrado.</p>;
+    return <p>No IMC data found.</p>;
   }
 
   const sortedData = [...imcData].sort((a, b) => b.imcCliente - a.imcCliente);
@@ -24,26 +24,31 @@ const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) 
   const lowestImc = sortedData[sortedData.length - 1];
   const lastEntry = imcData[imcData.length - 1];
 
-  const finalData = [highestImc, lowestImc, lastEntry, ...sortedData.filter(
-    (entry) => entry !== highestImc && entry !== lowestImc && entry !== lastEntry
-  )].slice(0, 7);
+  const finalData = [
+    highestImc, 
+    lowestImc, 
+    lastEntry, 
+    ...sortedData.filter(entry => 
+      entry !== highestImc && entry !== lowestImc && entry !== lastEntry
+    )
+  ].slice(0, 7);
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Tem certeza que deseja excluir este registro?')) {
+    if (window.confirm('Are you sure you want to delete this record?')) {
       try {
-        const response = await axios.delete(`http://localhost:8080/api/cliente/${id}`);
+        const response = await deleteImc(id);
         
         if (response.status === 200) {
-          await fetchImcData(); 
-          setAlertMessage('Registro excluído com sucesso.');
+          setAlertMessage('Record successfully deleted. Updating the list...');
           setAlertSeverity('success');
+          await fetchImcData();
         } else {
-          setAlertMessage('Não foi possível excluir o registro. Tente novamente.');
+          setAlertMessage('Failed to delete the record. Try again.');
           setAlertSeverity('error');
         }
       } catch (error) {
-        console.error('Erro ao excluir o registro:', error);
-        setAlertMessage('Não foi possível excluir o registro devido a um erro de rede ou servidor.');
+        console.error('Error deleting the record:', error);
+        setAlertMessage('Failed to delete the record due to a network or server error.');
         setAlertSeverity('error');
       } finally {
         setOpenSnackbar(true);
@@ -56,13 +61,13 @@ const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) 
       <Table>
         <thead>
           <tr>
-            <Th>Nome</Th>
-            <Th>Peso (kg)</Th>
-            <Th>Altura (m)</Th>
-            <Th>IMC</Th>
-            <Th>Descrição</Th>
-            <Th>Observação</Th>
-            <Th>Ações</Th>
+            <Th>Name</Th>
+            <Th>Weight (kg)</Th>
+            <Th>Height (m)</Th>
+            <Th>BMI</Th>
+            <Th>Description</Th>
+            <Th>Observation</Th>
+            <Th>Actions</Th>
           </tr>
         </thead>
         <tbody>
@@ -86,16 +91,12 @@ const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) 
         </tbody>
       </Table>
 
-      <Snackbar 
+      <AlertSnackbar 
         open={openSnackbar} 
-        autoHideDuration={6000} 
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={alertSeverity} sx={{ width: '100%' }}>
-          {alertMessage}
-        </Alert>
-      </Snackbar>
+        message={alertMessage} 
+        severity={alertSeverity} 
+        onClose={handleCloseSnackbar} 
+      />
     </>
   );
 };

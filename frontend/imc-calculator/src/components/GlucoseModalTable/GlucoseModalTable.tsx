@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Table, Th, Td, TrashIconImg } from '../shared/ModalTable.styles'; 
 import { GlucoseModalTableProps } from './GlucoseModalTable.types';
 import TrashIcon from '../../assets/trash.svg';
-import { Alert, Snackbar } from '@mui/material';
+import { deleteGlucose } from '../../services/glucoseService';
+import AlertSnackbar from '../AlertSnackbar/AlertSnackbar';
 
 const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetchGlucoseData }) => {
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
@@ -15,37 +15,40 @@ const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetc
   };
 
   if (glucoseData.length === 0) {
-    return <p>Nenhum dado de glicemia encontrado.</p>;
+    return <p>No glucose data found.</p>;
   }
 
   const sortedData = [...glucoseData].sort((a, b) => b.glicemiaCliente - a.glicemiaCliente);
 
   const highestGlucose = sortedData[0];
   const lowestGlucose = sortedData[sortedData.length - 1];
-  const lastEntry = glucoseData[glucoseData.length - 1]; 
+  const lastEntry = glucoseData[glucoseData.length - 1];
 
-  const finalData = [highestGlucose, lowestGlucose, lastEntry, ...sortedData.filter(
-    (entry) => entry !== highestGlucose && entry !== lowestGlucose && entry !== lastEntry
-  )].slice(0, 7); 
+  const finalData = [
+    highestGlucose, 
+    lowestGlucose, 
+    lastEntry, 
+    ...sortedData.filter(entry => 
+      entry !== highestGlucose && entry !== lowestGlucose && entry !== lastEntry
+    )
+  ].slice(0, 7);
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Tem certeza que deseja excluir este registro?')) {
+    if (window.confirm('Are you sure you want to delete this record?')) {
       try {
-        const response = await axios.delete(`http://localhost:8080/api/cliente/${id}`);
+        const response = await deleteGlucose(id);
         
         if (response.status === 200) {
-          setAlertMessage('Registro excluído com sucesso. Atualizando a lista...');
+          setAlertMessage('Record successfully deleted. Updating the list...');
           setAlertSeverity('success');
-          setTimeout(async () => {
-            await fetchGlucoseData(); 
-          }, 3000);
+          setTimeout(fetchGlucoseData, 3000);
         } else {
-          setAlertMessage('Não foi possível excluir o registro. Tente novamente.');
+          setAlertMessage('Failed to delete the record. Try again.');
           setAlertSeverity('error');
         }
       } catch (error) {
-        console.error('Erro ao excluir o registro:', error);
-        setAlertMessage('Não foi possível excluir o registro devido a um erro de rede ou servidor.');
+        console.error('Error deleting the record:', error);
+        setAlertMessage('Failed to delete the record due to a network or server error.');
         setAlertSeverity('error');
       } finally {
         setOpenSnackbar(true);
@@ -58,10 +61,10 @@ const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetc
       <Table>
         <thead>
           <tr>
-            <Th>Nome</Th>
-            <Th>Glicemia</Th>
-            <Th>Observação</Th>
-            <Th>Ações</Th>
+            <Th>Name</Th>
+            <Th>Glucose</Th>
+            <Th>Observation</Th>
+            <Th>Actions</Th>
           </tr>
         </thead>
         <tbody>
@@ -82,17 +85,12 @@ const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetc
         </tbody>
       </Table>
 
-      {/* Snackbar do MUI para exibir alertas */}
-      <Snackbar 
+      <AlertSnackbar 
         open={openSnackbar} 
-        autoHideDuration={6000} 
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={alertSeverity} sx={{ width: '100%' }}>
-          {alertMessage}
-        </Alert>
-      </Snackbar>
+        message={alertMessage} 
+        severity={alertSeverity} 
+        onClose={handleCloseSnackbar} 
+      />
     </>
   );
 };
