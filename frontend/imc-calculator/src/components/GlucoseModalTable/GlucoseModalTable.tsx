@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Table, Th, Td, TrashIconImg } from './GlucoseModalTable.styles';
+import { Table, Th, Td, TrashIconImg } from '../shared/ModalTable.styles'; 
 import { GlucoseModalTableProps } from './GlucoseModalTable.types';
 import TrashIcon from '../../assets/trash.svg';
 import { Alert, Snackbar } from '@mui/material';

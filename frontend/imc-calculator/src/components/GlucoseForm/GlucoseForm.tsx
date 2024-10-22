@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-// Importando os estilos
-import { Card, RoundImage, Input, Button, SecondaryButton } from './GlucoseForm.styles';
-// Importando os tipos
+import { Card, RoundImage, Input, Button, SecondaryButton } from '../shared/Form.styles';
 import { GlucoseFormProps } from './GlucoseForm.types';
 import PersonMeasurement from '../../assets/blood_drop.png';
 
