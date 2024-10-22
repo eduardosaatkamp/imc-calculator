@@ -53,7 +53,7 @@ const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetc
 
   const finalData = [highestGlucose, lowestGlucose, lastEntry, ...sortedData.filter(
     (entry) => entry !== highestGlucose && entry !== lowestGlucose && entry !== lastEntry
-  )].slice(0, 10); 
+  )].slice(0, 7); 
 
 
   const handleDelete = async (id: number) => {

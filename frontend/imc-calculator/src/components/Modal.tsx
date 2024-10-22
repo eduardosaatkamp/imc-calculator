@@ -15,8 +15,8 @@ const Overlay = styled.div`
 `;
 
 const ModalContent = styled.div`
-  width: 80%;
-  max-width: 500px;
+  width: 90%; /* Aumente a largura para 90% */
+  max-width: 800px; /* Aumente a largura máxima para 800px */
   background: white;
   padding: 20px;
   border-radius: 8px;
