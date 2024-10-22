@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ImcForm from './components/ImcForm';
-import ImcTable from './components/ImcTable'; 
+import ImcTable from './components/ImcTable/ImcTable'; 
 import GlucoseForm from './components/GlucoseForm';
-import GlucoseQueueTable from './components/GlucoseQueueTable';
+import GlucoseQueueTable from './components/GlucoseQueueTable/GlucoseQueueTable';
 import styled from 'styled-components';
-import Modal from './components/Modal';
-import ImcModalTable from './components/ImcModalTable'; 
-import GlucoseModalTable from './components/GlucoseModalTable';
+import Modal from './components/Modal/Modal';
+import ImcModalTable from './components/ImcModalTable/ImcModalTable'; 
+import GlucoseModalTable from './components/GlucoseModalTable/GlucoseModalTable';
 import axios from 'axios';
 
 const Container = styled.div`

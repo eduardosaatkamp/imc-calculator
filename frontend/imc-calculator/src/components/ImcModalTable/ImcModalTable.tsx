@@ -1,49 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
-import TrashIcon from '../assets/trash.svg';
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-`;
-
-const Th = styled.th`
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
-  border: 1px solid #ccc;
-`;
-
-const Td = styled.td<{ highlighted?: boolean }>`
-  padding: 10px;
-  border: 1px solid #ccc;
-  text-align: center;
-  background-color: ${({ highlighted }) => (highlighted ? '#ffd700' : 'white')};
-  border: ${({ highlighted }) => (highlighted ? '2px solid red' : '1px solid #ccc')};
-`;
-
-const TrashIconImg = styled.img`
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.7;
-  }
-`;
-
-interface ImcModalTableProps {
-  imcData: { id: number; nome: string; imcCliente: number; descricao: string; obsImc: string; peso: number; altura: number }[];
-  fetchImcData: () => void;
-}
+import { Table, Th, Td, TrashIconImg } from './ImcModalTable.styles';
+import { ImcModalTableProps } from './ImcModalTable.types';
+import TrashIcon from '../../assets/trash.svg';
 
 const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) => {
   if (imcData.length === 0) {
     return <p>Nenhum dado de IMC encontrado.</p>;
   }
 
-  // Função para excluir um registro de IMC
   const handleDelete = async (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir este registro?')) {
       try {

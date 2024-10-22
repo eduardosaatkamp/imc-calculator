@@ -1,42 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
-import TrashIcon from '../assets/trash.svg'; // Importando o ícone de lixeira
+import { Table, Th, Td, TrashIconImg } from './GlucoseModalTable.styles';
+import { GlucoseModalTableProps } from './GlucoseModalTable.types';
+import TrashIcon from '../../assets/trash.svg';
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-`;
-
-const Th = styled.th`
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
-  border: 1px solid #ccc;
-`;
-
-const Td = styled.td<{ highlighted?: boolean }>`
-  padding: 10px;
-  border: 1px solid #ccc;
-  text-align: center;
-  background-color: ${({ highlighted }) => (highlighted ? '#ffd700' : 'white')};
-  border: ${({ highlighted }) => (highlighted ? '2px solid red' : '1px solid #ccc')};
-`;
-
-const TrashIconImg = styled.img`
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.7;
-  }
-`;
-
-interface GlucoseModalTableProps {
-  glucoseData: { id: number; nome: string; glicemiaCliente: number; obsGlicemia: string }[];
-  fetchGlucoseData: () => void; 
-}
 
 const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetchGlucoseData }) => {
   if (glucoseData.length === 0) {
@@ -60,7 +27,6 @@ const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetc
         
         if (response.status === 200) {
           alert('Registro excluído com sucesso. Atualizando a lista...');
-
           setTimeout(async () => {
             await fetchGlucoseData(); 
           }, 3000);
