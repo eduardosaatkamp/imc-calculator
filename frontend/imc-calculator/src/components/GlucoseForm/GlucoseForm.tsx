@@ -1,66 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import PersonMeasurement from '../assets/blood_drop.png';
-
-const Card = styled.div`
-  width: 80%;
-  max-width: 500px;
-  padding: 20px;
-  border: 2px solid #007bff;
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  text-align: center;
-  overflow: hidden;
-  margin-top: 20px;
-`;
-
-const RoundImage = styled.img`
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 16px;
-  border: 3px solid #007bff;
-`;
-
-const Input = styled.input`
-  padding: 8px;
-  width: 80%;
-  max-width: 250px;
-  margin: 0 auto;
-  display: block;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-`;
-
-const Button = styled.button`
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-  margin-right: 10px;
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
-const SecondaryButton = styled(Button)`
-  background-color: #28a745;
-  &:hover {
-    background-color: #218838;
-  }
-`;
-
-interface GlucoseFormProps {
-  fetchGlucoseData: () => void;
-  showGlucoseModal?: (nome: string, glicemiaCliente: number, obsGlicemia: string) => void;
-}
+// Importando os estilos
+import { Card, RoundImage, Input, Button, SecondaryButton } from './GlucoseForm.styles';
+// Importando os tipos
+import { GlucoseFormProps } from './GlucoseForm.types';
+import PersonMeasurement from '../../assets/blood_drop.png';
 
 const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData, showGlucoseModal }) => {
   const { t } = useTranslation();
@@ -84,7 +29,7 @@ const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData, showGlucose
       if (response.data && response.data.glicemiaCliente && showGlucoseModal) {
         showGlucoseModal(response.data.nome, response.data.glicemiaCliente, response.data.obsGlicemia);
       }
-      
+
       fetchGlucoseData(); 
     } catch (error) {
       console.log(t('error.registerPatient'));

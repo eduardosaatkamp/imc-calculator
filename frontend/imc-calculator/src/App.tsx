@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ImcForm from './components/ImcForm';
+import ImcForm from './components/ImcForm/ImcForm';
 import ImcTable from './components/ImcTable/ImcTable'; 
-import GlucoseForm from './components/GlucoseForm';
+import GlucoseForm from './components/GlucoseForm/GlucoseForm';
 import GlucoseQueueTable from './components/GlucoseQueueTable/GlucoseQueueTable';
 import styled from 'styled-components';
 import Modal from './components/Modal/Modal';
