@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { Card, RoundImage, Input, Button, SecondaryButton } from '../shared/Form.styles';
-import { GlucoseFormProps } from './GlucoseForm.types';
+import { GlucoseFormProps } from '../../types/GlucoseForm.types';
 import PersonMeasurement from '../../assets/blood_drop.png';
 
 const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData, showGlucoseModal }) => {

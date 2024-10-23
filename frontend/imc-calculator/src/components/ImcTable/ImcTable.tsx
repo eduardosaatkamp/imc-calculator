@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, Table, Th, Td, Description } from '../shared/Table.styles';
-import { Paciente } from './ImcTable.types';
+import { Paciente } from '../../types/ImcTable.types';
 
 const ImcTable = () => {
   const { t } = useTranslation();

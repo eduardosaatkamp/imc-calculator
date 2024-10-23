@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Table, Th, Td, TrashIconImg } from '../shared/ModalTable.styles'; 
-import { GlucoseModalTableProps } from './GlucoseModalTable.types';
+import { GlucoseModalTableProps } from '../../types/GlucoseModalTable.types';
 import TrashIcon from '../../assets/trash.svg';
 import { deleteGlucose } from '../../services/glucoseService';
 import AlertSnackbar from '../AlertSnackbar/AlertSnackbar';

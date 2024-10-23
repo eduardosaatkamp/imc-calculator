@@ -1,12 +1,6 @@
 import React from 'react';
 import { Snackbar, Alert } from '@mui/material';
-
-interface AlertSnackbarProps {
-  open: boolean;
-  message: string | null;
-  severity: 'success' | 'error';
-  onClose: () => void;
-}
+import { AlertSnackbarProps } from '../../types/AlertSnackbar.types';
 
 const AlertSnackbar: React.FC<AlertSnackbarProps> = ({ open, message, severity, onClose }) => {
   return (

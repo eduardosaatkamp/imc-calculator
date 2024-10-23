@@ -1,6 +1,6 @@
 import React from 'react';
 import { Overlay, ModalContent, CloseButton } from './Modal.styles';
-import { ModalProps } from './Modal.types';
+import { ModalProps } from '../../types/Modal.types';
 
 const Modal: React.FC<ModalProps> = ({ children, onClose }) => {
   return (

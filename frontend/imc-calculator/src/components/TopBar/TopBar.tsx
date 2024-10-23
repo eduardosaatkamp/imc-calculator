@@ -8,7 +8,7 @@ import {
   Flag, 
   AppTitle 
 } from './TopBar.styles';
-import { TopBarProps } from './TopBar.types';
+import { TopBarProps } from '../../types/TopBar.types';
 
 const TopBar: React.FC<TopBarProps> = ({ changeLanguage }) => {
   const { t } = useTranslation();
