@@ -73,10 +73,10 @@ const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) 
         <tbody>
           {finalData.map((paciente, index) => (
             <tr key={paciente.id}>
-              <Td highlighted={index === 0 || index === 1 || index === 2}>{paciente.nome}</Td>
-              <Td highlighted={index === 0 || index === 1 || index === 2}>{paciente.peso}</Td>
-              <Td highlighted={index === 0 || index === 1 || index === 2}>{paciente.altura}</Td>
-              <Td highlighted={index === 0 || index === 1 || index === 2}>{paciente.imcCliente}</Td>
+              <Td highlighted={index <= 2}>{paciente.nome}</Td>
+              <Td highlighted={index <= 2}>{paciente.peso}</Td>
+              <Td highlighted={index <= 2}>{paciente.altura}</Td>
+              <Td highlighted={index <= 2}>{paciente.imcCliente}</Td>
               <Td>{paciente.descricao}</Td>
               <Td>{paciente.obsImc}</Td>
               <Td>

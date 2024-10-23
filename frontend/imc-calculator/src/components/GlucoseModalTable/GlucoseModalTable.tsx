@@ -41,7 +41,7 @@ const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetc
         if (response.status === 200) {
           setAlertMessage('Record successfully deleted. Updating the list...');
           setAlertSeverity('success');
-          setTimeout(fetchGlucoseData, 3000);
+          await fetchGlucoseData(); 
         } else {
           setAlertMessage('Failed to delete the record. Try again.');
           setAlertSeverity('error');
@@ -70,8 +70,8 @@ const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetc
         <tbody>
           {finalData.map((paciente, index) => (
             <tr key={paciente.id}>
-              <Td highlighted={index === 0 || index === 1 || index === 2}>{paciente.nome}</Td>
-              <Td highlighted={index === 0 || index === 1 || index === 2}>{paciente.glicemiaCliente}</Td>
+              <Td highlighted={index <= 2}>{paciente.nome}</Td>
+              <Td highlighted={index <= 2}>{paciente.glicemiaCliente}</Td>
               <Td>{paciente.obsGlicemia}</Td>
               <Td>
                 <TrashIconImg 
