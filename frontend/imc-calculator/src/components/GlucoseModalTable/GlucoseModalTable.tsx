@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Th, Td, TrashIconImg } from '../shared/ModalTable.styles'; 
 import { GlucoseModalTableProps } from '../../types/GlucoseModalTable.types';
 import TrashIcon from '../../assets/icons/trash.svg';
-import { deleteGlucose } from '../../services/glucoseModalActions';
+import { deleteGlucose } from '../../services/glucoseModalActionsService';
 import AlertSnackbar from '../AlertSnackbar/AlertSnackbar';
 
 const GlucoseModalTable: React.FC<GlucoseModalTableProps> = ({ glucoseData, fetchGlucoseData }) => {
