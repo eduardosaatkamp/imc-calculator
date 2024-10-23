@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { Card, RoundImage, Input, Button, SecondaryButton } from '../shared/Form.styles';
 import { ImcFormProps } from '../../types/ImcForm.types';
-import PersonMeasurement from '../../assets/person_measurement.png';
+import { registerImc } from '../../services/imcRecordService';
+import PersonMeasurement from '../../assets/images/person_measurement.png';
 
 const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
   const { t } = useTranslation();
@@ -28,12 +28,7 @@ const ImcForm: React.FC<ImcFormProps> = ({ fetchImcData }) => {
     }
 
     try {
-      await axios.post('http://localhost:8080/api/cliente', {
-        nome: name,
-        peso: weightNum,
-        altura: heightNum,
-      });
-
+      await registerImc(name, weightNum, heightNum);
       fetchImcData();
     } catch (error) {
       alert(t('error.registerPatient'));

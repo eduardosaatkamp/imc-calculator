@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import ImcForm from './components/ImcForm/ImcForm';
 import ImcTable from './components/ImcTable/ImcTable'; 
 import GlucoseForm from './components/GlucoseForm/GlucoseForm';
-import GlucoseQueueTable from './components/GlucoseQueueTable/GlucoseQueueTable';
+import GlucoseQueueTable from './components/GlucoseTable/GlucoseTable';
 import Modal from './components/Modal/Modal';
 import ImcModalTable from './components/ImcModalTable/ImcModalTable'; 
 import GlucoseModalTable from './components/GlucoseModalTable/GlucoseModalTable';

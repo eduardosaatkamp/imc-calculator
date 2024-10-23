@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { Card, RoundImage, Input, Button, SecondaryButton } from '../shared/Form.styles';
 import { GlucoseFormProps } from '../../types/GlucoseForm.types';
-import PersonMeasurement from '../../assets/blood_drop.png';
+import { registerGlucose } from '../../services/glucoseRecordService';
+import PersonMeasurement from '../../assets/images/blood_drop.png';
 
 const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData, showGlucoseModal }) => {
   const { t } = useTranslation();
@@ -19,10 +19,7 @@ const GlucoseForm: React.FC<GlucoseFormProps> = ({ fetchGlucoseData, showGlucose
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/api/cliente', {
-        nome: name,
-        glicemiaCliente: glucoseNum,
-      });
+      const response = await registerGlucose(name, glucoseNum);
 
       if (response.data && response.data.glicemiaCliente && showGlucoseModal) {
         showGlucoseModal(response.data.nome, response.data.glicemiaCliente, response.data.obsGlicemia);

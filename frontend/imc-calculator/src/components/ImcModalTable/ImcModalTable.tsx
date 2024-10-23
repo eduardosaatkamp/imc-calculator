@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Table, Th, Td, TrashIconImg } from '../shared/ModalTable.styles'; 
 import { ImcModalTableProps } from '../../types/ImcModalTable.types';
-import TrashIcon from '../../assets/trash.svg';
-import { deleteImc } from '../../services/imcService';
+import TrashIcon from '../../assets/icons/trash.svg';
+import { deleteImc } from '../../services/imcModalActions';
 import AlertSnackbar from '../AlertSnackbar/AlertSnackbar';
 
 const ImcModalTable: React.FC<ImcModalTableProps> = ({ imcData, fetchImcData }) => {
