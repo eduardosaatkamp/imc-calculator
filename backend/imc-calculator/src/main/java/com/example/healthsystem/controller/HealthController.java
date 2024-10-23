@@ -19,7 +19,7 @@ public class HealthController {
     private HealthService healthService;
 
     @PostMapping
-    public ResponseEntity<Health> createOrUpdateCliente(@RequestBody Health health) {
+    public ResponseEntity<Health> createOrUpdateClient(@RequestBody Health health) {
         if (health.getNome() == null || health.getNome().trim().isEmpty()) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -58,34 +58,34 @@ public class HealthController {
             }
         }
 
-        Health savedHealth = healthService.createOrUpdateCliente(health);
+        Health savedHealth = healthService.createOrUpdateClient(health);
 
         return ResponseEntity.ok(savedHealth);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Health> getClienteById(@PathVariable Long id) {
-        Optional<Health> cliente = healthService.getClienteById(id);
+        Optional<Health> cliente = healthService.getClientById(id);
 
         return cliente.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping(params = "tipo=imc")
-    public ResponseEntity<List<Health>> getClientesImc() {
-        List<Health> clientesImc = healthService.getClientesImc();
+    public ResponseEntity<List<Health>> getClientsBMI() {
+        List<Health> clientesImc = healthService.getClientsBMI();
         return ResponseEntity.ok(clientesImc);
     }
 
     @GetMapping(params = "tipo=glicemia")
-    public ResponseEntity<List<Health>> getClientesGlicemia() {
-        List<Health> clientesGlicemia = healthService.getClientesGlicemia();
+    public ResponseEntity<List<Health>> getClientsGlucose() {
+        List<Health> clientesGlicemia = healthService.getClientsGlucose();
         return ResponseEntity.ok(clientesGlicemia);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCliente(@PathVariable Long id, @RequestBody Health health) {
-        Optional<Health> existingCliente = healthService.getClienteById(id);
+        Optional<Health> existingCliente = healthService.getClientById(id);
         if (!existingCliente.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado.");
         }
@@ -124,18 +124,21 @@ public class HealthController {
             }
         }
 
-        healthService.createOrUpdateCliente(healthToUpdate);
+        healthService.createOrUpdateClient(healthToUpdate);
         return new ResponseEntity<>("Cliente atualizado com sucesso.", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCliente(@PathVariable Long id) {
-        Optional<Health> existingCliente = healthService.getClienteById(id);
+    public ResponseEntity<?> deleteClient(@PathVariable Long id) {
+        Optional<Health> existingCliente = healthService.getClientById(id);
         if (!existingCliente.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado.");
         }
 
-        healthService.deleteCliente(id);
+        healthService.deleteClient(id);
         return new ResponseEntity<>("Cliente excluído com sucesso.", HttpStatus.OK);
+    }
+
+    public void setHealthService(HealthService healthService) {
     }
 }
