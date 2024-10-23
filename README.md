@@ -28,6 +28,5 @@ Important Commands
 - `docker-compose down`: Stops and removes the Docker containers.
 
 Testing in Postman
-1. Add a new POST request to `http://localhost:8080/api/cliente`.
 2. In the body, use the JSON format to register patients (BMI or Glucose).
 3. For GET requests, use `http://localhost:8080/api/cliente?tipo=imc` or `tipo=glicemia
