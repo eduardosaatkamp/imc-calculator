@@ -3,9 +3,16 @@ Project Summary
 Objective
 This project is an application for BMI calculation and glucose screening, including both frontend and backend. The objective is to enable the registration, visualization, and deletion patient records,with functionalities for BMI calculation and fasting glucose screening, focusing on detecting high and low values, as both are health concerns.
 
+
+Memória atualizada
+Project Summary
+
+Objective
+This project is an application for BMI calculation and glucose screening, including both frontend and backend. The objective is to enable the registration, visualization, and deletion of problematic patient records, with functionalities for BMI calculation and fasting glucose screening, focusing on detecting high and low values, as both are health concerns.
+
 Technologies Used
-Backend: Java 17, Spring Boot, Lombok, Swagger, Hibernate, Liquibase, PostgreSQL, and Docker.
-Frontend: React, TypeScript, Styled-components, Material UI, and Axios.
+Backend: Java 17, Spring Boot, Lombok, Hibernate, Liquibase, PostgreSQL, Docker, JUnit.
+Frontend: React, TypeScript, Styled-components, Material UI, Axios, React Internationalization, Jest.
 
 How to Run the Project
  - Clone the project repository.
